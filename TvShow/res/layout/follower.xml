@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal" 
+	android:background="@drawable/catalog_list_selector"
+	android:descendantFocusability="blocksDescendants"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<ImageView android:id="@+id/tv_follower_image" 
+		android:layout_width="180dip"
+		android:layout_height="100dip" 
+		android:layout_margin="5px"
+		android:paddingBottom="10dip" 
+		android:paddingRight="20dip"
+		android:scaleType="centerInside"
+		/>
+		<TextView android:id="@+id/tv_follower_name" 
+			android:layout_width="150dip"
+			android:layout_height="wrap_content" 
+			android:textColor="#ff6699"
+			android:textSize="30dip"
+			android:ellipsize="start"
+			android:marqueeRepeatLimit="marquee_forever"
+			 />
+	     <Button 
+	     android:visibility="gone"
+	     android:layout_width="wrap_content"
+		 android:layout_height="wrap_content" 
+		 android:layout_gravity="right"
+		 android:text="unfollowing"
+		 android:textColor="#cc3366"
+		 android:textSize="13px"
+		 android:id="@+id/tv_following_follow"
+		 android:focusable="false"
+	     />
+
+	
+</LinearLayout>

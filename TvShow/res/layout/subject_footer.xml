@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/tv_mytopic_nextpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dip"
+        android:focusable="true"
+        android:text="下一页"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/tv_mytopic_previewpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dip"
+        android:focusable="true"
+        android:text="上一页"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:visibility="visible" />
+
+</LinearLayout>

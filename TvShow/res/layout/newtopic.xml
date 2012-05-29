@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:background="#FFF5F5F5"
+	android:orientation="vertical" android:layout_height="fill_parent">
+	<LinearLayout android:gravity="center_vertical"
+		android:orientation="horizontal" android:id="@+id/title_bar"
+		android:background="@drawable/title_bg_night" android:layout_width="fill_parent"
+		android:layout_height="35.0dip">
+		<ImageButton android:layout_width="40dip"  android:id="@+id/backtohome"
+			android:src="@drawable/back_home_selector" android:layout_gravity="left" android:layout_height="match_parent" android:layout_marginLeft="2dip"/>
+		<LinearLayout android:gravity="center_vertical"
+			android:layout_width="0.0dip" android:layout_height="wrap_content"
+			android:layout_marginLeft="50dip"
+			android:layout_weight="1.0">
+			<TextView android:textSize="16.0sp" android:textColor="@color/titletextcolor"
+				android:singleLine="true" android:id="@+id/myTitle"
+				android:layout_width="fill_parent" android:ellipsize="end"
+				android:layout_height="wrap_content" android:text="发表话题" />
+		</LinearLayout>
+		<ImageButton android:id="@+id/back_button"
+			android:layout_gravity="center" android:background="@color/transparent"
+			android:layout_width="60.0dip" android:layout_height="29.0dip"
+			android:layout_marginRight="5.0dip" android:src="@drawable/back_night_selector" />
+	</LinearLayout>
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/subject_view" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:scrollbars="none"
+		android:layout_weight="1.0" android:padding="10dip"
+		android:background="#FFF5F5F5">
+		<RelativeLayout android:layout_width="fill_parent"
+			android:paddingTop="5dip" android:layout_height="fill_parent">
+			<TextView android:id="@+id/txtInfo" android:layout_width="fill_parent"
+			    android:textSize="30sp"  android:background="@color/blue_start"
+				android:text="新建话题" android:layout_height="wrap_content" />
+			<RelativeLayout android:layout_width="wrap_content"
+				android:paddingTop="10dip" android:layout_below="@id/txtInfo"
+				android:layout_height="wrap_content" android:id="@+id/wrapper">
+					<LinearLayout android:orientation="vertical"
+						 android:layout_height="wrap_content"
+						android:layout_width="fill_parent">
+					   <EditText android:text="" android:id="@+id/tv_post2other_content"
+				     android:layout_below="@id/title_bar"
+					android:gravity="top" android:layout_width="fill_parent"
+					android:hint="请输入内容"
+				  android:background="@android:drawable/editbox_background"
+					android:layout_height="300dip"></EditText>
+				</LinearLayout>
+			</RelativeLayout>
+		</RelativeLayout>
+	</ScrollView>
+
+		<LinearLayout android:layout_width="fill_parent"
+					android:paddingTop="10dip" android:gravity="center"
+					android:layout_below="@id/tv_post2other_content" android:layout_height="wrap_content">
+					<Button android:text="保存" android:id="@+id/tv_post2other_btnSave"
+						android:width="100dp" android:layout_width="wrap_content"
+						android:background="@drawable/wp_button_small"
+						android:layout_height="wrap_content"></Button>
+					<Button android:text="取消" android:id="@+id/tv_post2other_btnCancel"
+						android:background="@drawable/wp_button_small" android:width="100dp"
+						android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+				</LinearLayout>
+	
+</LinearLayout>
