@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    
+    android:background="@color/blue_add" android:orientation="vertical" android:layout_width="wrap_content">
+    	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+    	    >
+    	    <LinearLayout android:gravity="center_vertical"
+		android:orientation="horizontal" android:id="@+id/title_bar"
+		android:background="@drawable/title_bg_night" android:layout_width="fill_parent"
+		android:layout_height="35.0dip">
+		<ImageButton android:layout_width="40dip"  android:id="@+id/backtohome"
+			android:src="@drawable/back_home_selector" android:layout_gravity="left" android:layout_height="match_parent" android:layout_marginLeft="2dip"/>
+		<LinearLayout android:gravity="center_vertical"
+			android:layout_width="0.0dip" android:layout_height="wrap_content"
+			android:layout_marginLeft="40dip"
+			android:layout_weight="1.0">
+			<TextView  android:textColor="@color/titletextcolor"
+				android:singleLine="true" android:id="@+id/myTitle"
+				android:layout_width="fill_parent" android:ellipsize="end"
+				android:textSize="24sp"
+				android:layout_height="wrap_content" android:text="电影评论详情" />
+		</LinearLayout>
+		<ImageButton android:id="@+id/tv_reprogram_button"
+			android:layout_gravity="center" android:background="@color/transparent"
+			android:layout_width="60.0dip" android:layout_height="29.0dip"
+			android:layout_marginRight="5.0dip" android:src="@drawable/back_night_selector" />
+	</LinearLayout>
+    	 </RelativeLayout>
+	   	 <ScrollView 
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:isScrollContainer="true"
+	   	     >
+	    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@color/blue_add"
+	        >
+        	
+        	<LinearLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical"
+			    
+			    android:id="@+id/radio_check"
+        	    >
+	    	    <TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="40dip"
+			    android:textColor="#ff6666"
+			    android:layout_marginLeft="2dip"
+			    android:layout_marginRight="2dip"
+			    android:layout_marginTop="8dip"
+			    android:id="@+id/tv_tvshow_topicdetial_title"
+			    android:text="评论内容"
+			    android:textSize="30sp"
+        	    />
+        	   <TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="280dip"
+			    android:layout_marginLeft="2dip"
+			    android:layout_marginRight="2dip"
+			    android:layout_marginTop="8dip"
+			    android:textSize="30sp"
+			    android:background="@android:drawable/editbox_background_normal"
+			    android:id="@+id/tv_topicdetial_comment"
+        	    />
+        	    <TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="40dip"
+			    android:layout_marginLeft="2dip"
+			    android:layout_marginRight="2dip"
+			    android:layout_marginTop="8dip"
+			   android:background="#6666ff"
+			    android:layout_gravity="right"
+			    android:gravity="right"
+			    android:id="@+id/tv_topicdetial_current"
+        	    />
+        	    	<EditText
+				    android:layout_width="fill_parent"
+				    android:layout_height="2dip"
+				    android:focusable="false"
+				    />
+        	    	<LinearLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal"
+			    android:id="@+id/radio_check"
+        	    >
+	        	   
+				<Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="返回主页"
+	        	    android:layout_below="@id/radio_check"
+	        	    android:id="@+id/tv_topicdetia_reviewprogram"
+	        	    android:layout_gravity="center"
+	        	    android:background="@drawable/wp_button"
+        	    />
+        	    <Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="电影详情"
+	        	    android:layout_below="@id/radio_check"
+	        	    android:id="@+id/tv_topicdetial_programdetail"
+	        	    android:layout_gravity="center"
+	        	    android:background="@drawable/wp_button"
+	        	    
+        	    />
+        	    <Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="相关话题"
+	        	    android:layout_below="@id/radio_check"
+	        	    android:id="@+id/tv_topicdetial_sametopic"
+	        	    android:layout_gravity="center"
+	        	    android:background="@drawable/wp_button"
+        	    />
+        	    </LinearLayout>
+        	    <LinearLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal"
+			    android:id="@+id/radio_check"
+        	    >
+	        	   
+				
+        	    <Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="当前发言评论列表"
+	        	    android:layout_below="@id/radio_check"
+	        	    android:id="@+id/tv_sametopic_backtohome"
+	        	    android:layout_gravity="center"
+	        	    android:background="@drawable/wp_button"
+        	    />
+        	     <Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="评论发言"
+	        	    android:layout_below="@id/radio_check"
+	        	    android:id="@+id/tv_sametopic_idicupost"
+	        	    android:layout_gravity="center"
+	        	    android:background="@drawable/wp_button"
+        	    />
+        	   
+        	    </LinearLayout>
+        	</LinearLayout>
+        	<RelativeLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/radio_check"
+        	    >
+        	</RelativeLayout>
+	    </RelativeLayout>
+	    </ScrollView>
+</LinearLayout>

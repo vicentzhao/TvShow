@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/subject_otherhome_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1.0"
+    android:background="#FFF5F5F5"
+    android:scrollbars="none" >
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/blue_add"
+        android:orientation="vertical" >
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/title_bg"
+                android:orientation="horizontal" >
+                <ImageButton
+                    android:id="@+id/backtohome"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:layout_marginRight="40dp"
+                    android:src="@drawable/back_home_selector" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#3333ff"
+                    android:ellipsize="end"
+                    android:text="myHome"
+                    android:textColor="#ff6666"
+                    android:textSize="30dip" />
+            </LinearLayout>
+        </RelativeLayout>
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="true" >
+
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_add" >
+
+                <LinearLayout
+                    android:id="@+id/radio_check"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/tv_home_user_img"
+                        android:layout_width="130dip"
+                        android:layout_height="120dip" />
+
+                    <LinearLayout
+                        android:id="@+id/radio_check"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/tv_home_user_name"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dip"
+                            android:text="hello"
+                            android:textColor="@color/black"
+                            android:textSize="35dip"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_home_user_emali"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dip"
+                            android:text="hello"
+                            android:textColor="@color/black"
+                            android:textSize="28dp" />
+
+                        <TextView
+                            android:id="@+id/tv_home_user_currtime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:gravity="right"
+                            android:paddingRight="10dip"
+                            android:text="hello"
+                            android:textColor="#00f"
+                            android:textSize="18dip"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_height="2dip"
+                            android:focusable="false" />
+                    </LinearLayout>
+                </LinearLayout>
+
+             <LinearLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/radio_check"
+			    android:orientation="vertical"
+        	    >
+				        <Button
+				            android:drawableLeft="@drawable/home_bd"
+				            android:text="ta发表的话题"
+				            android:textSize="28dip"
+				            android:gravity="center"
+				            android:layout_width="fill_parent"
+				            android:layout_height="fill_parent"
+				             android:textColor="#ff6699"
+				              android:background="@drawable/wp_button"
+				              android:id="@+id/tv_home_writetopic"
+				            />
+				       <Button
+				         android:drawableLeft="@drawable/home_bd"
+				          android:layout_width="fill_parent"
+				            android:layout_height="fill_parent"
+				             android:gravity="center"
+				            android:text="ta的粉丝"
+				            android:textSize="28sp"
+				             android:textColor="#ff6699"
+				              android:background="@drawable/wp_button"
+				              android:id="@+id/tv_home_fans"
+				             />
+				                <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="ta发表的帖子"
+				             android:layout_width="fill_parent"
+				              android:gravity="center"
+				            android:layout_height="fill_parent"
+				            android:textSize="28dip"
+				            android:textColor="#ff6699"
+				             android:background="@drawable/wp_button"
+				             android:id="@+id/tv_home_join"
+				            />
+				        <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="ta的转发"
+				            android:textSize="28sp"
+				             android:gravity="center"
+				             android:layout_width="fill_parent"
+				            android:layout_height="fill_parent"
+				            android:id="@+id/tv_home_saysomething"
+				             android:background="@drawable/wp_button"
+				            android:textColor="#ff6699"/>
+				        <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="ta发表的评论"
+				            android:textSize="28sp"
+				             android:textColor="#ff6699"
+				              android:gravity="center"
+				              android:layout_width="fill_parent"
+				            android:layout_height="fill_parent"
+				              android:background="@drawable/wp_button"
+				              android:id="@+id/tv_home_userslist"
+				             />
+				        <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="ta被评论"
+				            android:textSize="28sp"
+				             android:gravity="center"
+				             android:layout_width="fill_parent"
+				            android:layout_height="fill_parent"
+				            android:id="@+id/tv_home_topicslist"
+				             android:background="@drawable/wp_button"
+				            android:textColor="#ff6699"/>
+        	</LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/tv_home_formyfriend"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/wp_button"
+            android:drawableLeft="@drawable/home_bd"
+            android:text="我关注的朋友"
+            android:textColor="#009966"
+            android:textSize="28dip" >
+        </Button>
+
+        <Button
+            android:id="@+id/tv_home_collectprogram"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/wp_button"
+            android:drawableLeft="@drawable/home_bd"
+            android:text="我收藏的节目"
+            android:textColor="#009966"
+            android:textSize="28dip" >
+        </Button>
+
+        <Button
+            android:id="@+id/tv_home_collecttopic"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/wp_button"
+            android:drawableLeft="@drawable/home_bd"
+            android:text="我收藏的话题"
+            android:textColor="#009966"
+            android:textSize="28dip" >
+        </Button>
+    </LinearLayout>
+
+</ScrollView>

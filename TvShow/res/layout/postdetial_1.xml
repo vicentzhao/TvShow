@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/blue_add"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical" >
+ 
+    	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+    	    android:gravity="left">
+    	  	<LinearLayout android:gravity="center_vertical"
+		android:orientation="horizontal" android:id="@+id/title_bar"
+		android:background="@drawable/title_bg_night" android:layout_width="fill_parent"
+		android:layout_height="35.0dip">
+		<ImageButton android:layout_width="40dip"  android:id="@+id/backtohome"
+			android:src="@drawable/back_home_selector" android:layout_gravity="left" android:layout_height="match_parent" android:layout_marginLeft="2dip"/>
+		<LinearLayout android:gravity="center_vertical"
+			android:layout_width="0.0dip" android:layout_height="wrap_content"
+			android:layout_marginLeft="50dip"
+			android:layout_weight="1.0">
+			<TextView android:textSize="16.0sp" android:textColor="@color/titletextcolor"
+				android:singleLine="true" android:id="@+id/myTitle"
+				android:layout_width="fill_parent" android:ellipsize="end"
+				android:layout_height="wrap_content" android:text="帖子详情" />
+		</LinearLayout>
+		<ImageButton android:id="@+id/back_button"
+			android:layout_gravity="center" android:background="@color/transparent"
+			android:layout_width="60.0dip" android:layout_height="29.0dip"
+			android:layout_marginRight="5.0dip" android:src="@drawable/back_night_selector" />
+	</LinearLayout>
+	    	  
+    	 </RelativeLayout>
+	   	 <ScrollView 
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:isScrollContainer="true"
+	   	     >
+	    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@color/blue_add"
+	        >
+        	
+        	<LinearLayout
+        	    android:id="@+id/radio_check"
+        	    android:layout_width="fill_parent"
+        	    android:layout_height="wrap_content"
+        	    android:orientation="vertical" >
+
+	    	    <TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="40dip"
+			    android:textColor="#ff6666"
+			    android:textSize="30dip"
+			    android:layout_marginLeft="2dip"
+			    android:layout_marginRight="2dip"
+			    android:layout_marginTop="8dip"
+			    android:id="@+id/tv_tvshow_topicdetial_title"
+        	    />
+        	   <TextView
+			    android:layout_width="fill_parent"
+			    android:textSize="30dip"
+			    android:layout_height="400dip"
+			    android:layout_marginLeft="2dip"
+			    android:layout_marginRight="2dip"
+			    android:layout_marginTop="8dip"
+			    android:background="@color/blue"
+			    android:id="@+id/tv_topicdetial_comment"
+        	    />
+        	    <TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="40dip"
+			    android:layout_marginLeft="2dip"
+			    android:layout_marginRight="2dip"
+			    android:layout_marginTop="8dip"
+			   android:background="#6666ff"
+			    android:layout_gravity="right"
+			    android:gravity="right"
+			    android:id="@+id/tv_topicdetial_current"
+        	    />
+        	    	<EditText
+				    android:layout_width="fill_parent"
+				    android:layout_height="2dip"
+				    android:focusable="false"
+				    />
+        	</LinearLayout>
+	    </RelativeLayout>
+	    </ScrollView>
+	    <LinearLayout style="@android:style/ButtonBar"
+		android:layout_gravity="bottom" android:orientation="horizontal"
+		android:id="@+id/post_toolbar" android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true">
+			<Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="电影评论"
+	        	    android:id="@+id/tv_topicdetia_reviewprogram"
+	        	    android:layout_gravity="center"
+	        	    android:layout_weight="1"
+	        	    android:background="@drawable/wp_button"
+        	    />
+        	    <Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="电影详情"
+	        	    android:layout_weight="1"
+	        	    android:id="@+id/tv_topicdetial_programdetail"
+	        	    android:layout_gravity="center"
+	        	    android:background="@drawable/wp_button"
+        	    />
+        	    <Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="相关话题"
+	        	    android:layout_weight="1"
+	        	    android:id="@+id/tv_topicdetial_sametopic"
+	        	    android:layout_gravity="center"
+	        	    android:background="@drawable/wp_button"
+        	    />
+        	     <Button 
+				    android:layout_width="100dip"
+				    android:layout_height="wrap_content"
+	        	    android:text="评论发言"
+	        	    android:layout_weight="1"
+	        	    android:id="@+id/tv_sametopic_idicupost"
+	        	    android:layout_gravity="center"
+	        	    android:background="@drawable/wp_button"
+        	    />
+	</LinearLayout>	
+</LinearLayout>

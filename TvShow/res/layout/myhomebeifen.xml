@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/subject_view" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:scrollbars="none"
+		android:layout_weight="1.0" 
+		android:background="#FFF5F5F5">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/blue_add" >
+    	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+    	    >
+    	    <LinearLayout
+    	        android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+		    	android:orientation="horizontal"
+		    	android:background="@drawable/title_bg"
+    	        >
+		    	<ImageButton 
+				    android:layout_width="50dip"
+				    android:layout_height="50dip"
+		    	   android:src="@drawable/back_home_selector"
+		    	   android:id="@+id/backtohome"
+		    	    android:layout_marginRight="40dp"
+		    	    />
+	    	    <TextView 
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+		    	    android:text="myHome"
+		    	    android:textSize="20dip"
+		    	    android:textColor="#ff6666"
+		    	    android:background="#3333ff"
+		    	    android:layout_gravity="center"
+		    	    android:ellipsize="end"
+	    	    />
+	    	   </LinearLayout>
+    	 </RelativeLayout>
+	   	 <ScrollView 
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:isScrollContainer="true"
+	   	     >
+	    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@color/blue_add"
+	        >
+        	<LinearLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal"
+			    android:id="@+id/radio_check"
+        	    >
+        	    <ImageView android:id="@+id/tv_home_user_img"
+			      android:layout_width="100dip" android:layout_height="120dip" />
+        	    <LinearLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical"
+			    android:id="@+id/radio_check"
+        	    >
+        	    <TextView android:id="@+id/tv_home_user_name"
+							android:layout_width="fill_parent" android:textColor="@color/black"
+							android:text="hello"
+							android:textSize="25dip" android:paddingTop="5dip"
+							android:textStyle="bold" android:layout_height="wrap_content" />
+						<TextView android:id="@+id/tv_home_user_emali"
+							android:paddingTop="10dip" android:layout_width="fill_parent"
+							android:textColor="@color/black" android:textSize="15dp"
+							android:text="hello"
+							android:layout_height="wrap_content" />
+					   <TextView android:id="@+id/tv_home_user_currtime"
+					            android:gravity="right"
+					            android:layout_gravity="right"
+								android:layout_width="wrap_content" android:textColor="#00f"
+								android:textSize="18dip" android:paddingRight="10dip"
+							    android:textStyle="bold" 
+								android:text="hello"
+								android:layout_height="wrap_content" />
+				<EditText
+				    android:layout_width="fill_parent"
+				    android:layout_height="2dip"
+				    android:focusable="false"
+				    />
+        	</LinearLayout>
+        	</LinearLayout>
+        	<RelativeLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/radio_check"
+        	    >
+        	     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				    android:layout_width="fill_parent"
+				    android:layout_height="fill_parent"
+				    android:isScrollContainer="true"
+				    android:stretchColumns="1">
+				   
+				
+				    <TableRow>
+				        <Button
+				            android:drawableLeft="@drawable/home_bd"
+				            android:layout_marginLeft="10dip"
+				            android:text="我发表的话题"
+				            android:textSize="18dip"
+				             android:textColor="#ff6699"
+				             android:layout_width="250dip"
+				              android:background="@drawable/wp_button"
+				              android:id="@+id/tv_home_writetopic"
+				            />
+				       <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="我的粉丝"
+				            android:textSize="18sp"
+				             android:textColor="#ff6699"
+				              android:background="@drawable/wp_button"
+				              android:id="@+id/tv_home_fans"
+				             />
+				    </TableRow>
+				    <TableRow>
+				       
+				                <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="我发表的帖子"
+				            android:gravity="right|fill"
+				            android:textSize="18dip"
+				            android:textColor="#ff6699"
+				             android:background="@drawable/wp_button"
+				             android:id="@+id/tv_home_join"
+				            />
+				        <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="我的评论"
+				           
+				            android:textSize="18sp"
+				            android:id="@+id/tv_home_saysomething"
+				             android:background="@drawable/wp_button"
+				            android:textColor="#ff6699"/>
+				    </TableRow>
+				        <TableRow>
+				        <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="用户列表"
+				            android:textSize="18sp"
+				             android:textColor="#ff6699"
+				              android:background="@drawable/wp_button"
+				              android:id="@+id/tv_home_userslist"
+				             />
+				        <Button
+				         android:drawableLeft="@drawable/home_bd"
+				            android:text="话题列表"
+				            android:textSize="18sp"
+				            android:id="@+id/tv_home_topicslist"
+				             android:background="@drawable/wp_button"
+				            android:textColor="#ff6699"/>
+				    </TableRow>
+				</TableLayout>
+        	</RelativeLayout>
+        	
+	    </RelativeLayout>
+	    </ScrollView>
+	   	  <Button android:background="@drawable/wp_button" android:text="我关注的朋友" android:id="@+id/tv_home_formyfriend"  android:textSize="18dip"  android:textColor="#009966"  android:drawableLeft="@drawable/home_bd" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+	   	  <Button android:background="@drawable/wp_button" android:text="我收藏的节目" android:id="@+id/tv_home_collectprogram"  android:textSize="18dip"  android:textColor="#009966"  android:drawableLeft="@drawable/home_bd" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+	   	  <Button android:background="@drawable/wp_button" android:text="我收藏的话题" android:id="@+id/tv_home_collecttopic"  android:textSize="18dip"  android:textColor="#009966"  android:drawableLeft="@drawable/home_bd" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+</LinearLayout>
+</ScrollView>

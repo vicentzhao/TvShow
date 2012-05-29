@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, TvShowActivity!</string>
+    <string name="app_desc">社區電視</string>
+    <string name="app_name">TvShow</string>
+    <string name="password">密码</string>
+    <string name="name">用户名</string>
+    <string name="saysomthing">发言</string><string name="btnLogin">登录</string>
+    <string name="btnCancle">取消</string>
+    <string name="user_login">用户登录</string>
+    <string name="loading">正在下载，请稍后。。</string>
+    <string name="discuss">影片讨论区</string>
+    <string name="forme">提及我</string>
+   <string name="user_name">大地的裂痕</string>
+    <string name="find_content">input</string>
+    <string name="search_topic">搜索话题</string>
+    <string name="search_movie_item">节目</string>
+    <string name="search_contact">联系人</string>
+    <string name="search_button">搜索</string>
+    <string name="today_hot_topic">今日热议话题</string>
+    <string name="today_hot_movie">今日热议影视</string>
+    <string name="today_hot_person">今日热议风云人物</string>
+    <string name="week_hot_topic">本周热议话题</string>
+    <string name="week_hot_movie">本周热议影视</string>
+    <string name="week_hot_person">本周热议风云人物</string>
+    <string name="all_tv_channel">所有电视频道</string>
+    <string name="all_tv_item">所有电视节目</string>
+    <string name="ihot_tvitem_program">电视节目热点推荐</string>
+    <string name="all_tv_play">所有电视剧</string>
+    <string name="ihot_tv_program">电视热点推荐</string>
+    <string name="all_movie">所有电影</string>
+    <string name="ihot_all_movie">所有电影热点推荐</string>
+    <string name="say_details">发言详情</string>
+    <string name="index">首页>></string>
+    <string name="content">ss
+	</string>
+	<string name="relative_activity">相关活动</string>
+	<string name="isay">我要发言</string>
+	<string name="comment">评论发言</string>
+	<string name="tab_main_nav_fav">关于电影</string>
+	<string name="see_actor">主要演员</string><string name="myhome">我的主页</string>
+	<string name="see_filename">电影名</string>
+	<string name="tv_show">电视影视</string><string name="list_comment">评论列表</string>
+	  
+</resources>
