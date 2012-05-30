@@ -43,11 +43,10 @@ import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 import cn.rushmedia.jay.tvshow.util.ImageFileCache;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 import cn.rushmedia.jay.tvshow.util.TimeDifference;
-
 public class MyPostActivity extends BaseActivity implements OnClickListener {
-	int upid;
+	private int upid;
 	private AppData appData;
-	ViewHolder holder;
+	private ViewHolder holder;
 	private List<Program> mData;
 	private JSONObject js;
 	private int userid;
@@ -608,7 +607,6 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			intiData(page, count);
 		}
 	}
-
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -621,7 +619,6 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			mSubjectFooter.setVisibility(View.GONE);
 			loadmoreItem();
 			break;
-
 		}
 	}
 	void initView(){

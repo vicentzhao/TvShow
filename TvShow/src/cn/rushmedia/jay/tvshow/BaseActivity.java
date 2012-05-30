@@ -54,7 +54,6 @@ public class BaseActivity extends Activity {
 		ImageButton ib = (ImageButton) this.findViewById(R.id.back_button);
 		if (ib != null) {
 			ib.setOnClickListener(new OnClickListener() {
-
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					finish();
@@ -87,7 +86,6 @@ public class BaseActivity extends Activity {
 		pd.setMessage(message);
 		pd.show();
 	}
-
 	public void dismissProgressDialog() {
 		pd.dismiss();
 	}

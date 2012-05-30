@@ -28,7 +28,7 @@ public class PostsDetialActivity extends BaseActivity {
      private Button tv_sametopic_isay;
      private Button tv_sametopic_backtohome;
      private Button tv_sametopic_idicupost;
-     private  int programId;
+     private int programId;
      private int p;
      private ImageButton back_button;
      private MyHomeLineDiscu  homeLineDiscu;
@@ -54,9 +54,9 @@ public class PostsDetialActivity extends BaseActivity {
 	    tv_topicdetial_comment.setText(homeLineDiscu.getC());
 	    tv_topicdetial_current.setText(timeDiffence);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//»Øµ½Ö÷Ò³
 		backtohome.setOnClickListener(new OnClickListener() {
 			
 			@Override

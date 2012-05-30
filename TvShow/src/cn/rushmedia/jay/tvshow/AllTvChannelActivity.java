@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.rushmedia.jay.tvshow.domain.Tv;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
+import cn.rushmedia.jay.tvshow.util.ImageFileCache;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 
 public class AllTvChannelActivity extends Activity {
@@ -42,7 +44,6 @@ public class AllTvChannelActivity extends Activity {
 	    try {
 			js = ju.getSource(path);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	    for (int i = 0; i < js.length(); i++) {
@@ -66,10 +67,8 @@ public class AllTvChannelActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				
 			}
 		});
-
 }
 	public final class ViewHolder{
 		public ImageView tv_tvshow_tvchannelimage;
@@ -80,19 +79,16 @@ public class AllTvChannelActivity extends Activity {
 		public int getCount() {
 			return tvList.size();
 		}
-
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
 			return null;
 		}
-
 		@Override
 		public long getItemId(int position) {
 			// TODO Auto-generated method stub
 			return 0;
 		}
-
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			holderView = new ViewHolder();
@@ -106,15 +102,23 @@ public class AllTvChannelActivity extends Activity {
 			}else{
 				holderView =(ViewHolder) convertView.getTag();
 			}
+			String TVImagePath = tvList.get(position).getImagePath();
+			ImageFileCache cache =ImageFileCache.getCashInstance();
+			Bitmap TvImage = cache.getImage(TVImagePath);
+			if(TvImage!=null){
+				holderView.tv_tvshow_tvchannelimage.setImageBitmap(TvImage);
+			}
 			 holderView.tv_tvshow_tvchannelname.setText(tvList.get(position).getName());
 			 ImageDownloder idDownloder= new ImageDownloder();
 			 try {
-				holderView.tv_tvshow_tvchannelimage.setImageBitmap(idDownloder.imageDownloder(tvList.get(position).getImagePath()));
+				 Bitmap TvImageNew = idDownloder.imageDownloder(TVImagePath);
+				holderView.tv_tvshow_tvchannelimage.setImageBitmap(idDownloder.imageDownloder(TVImagePath));
+				cache.saveBmpToSd(TvImageNew, TVImagePath);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	
+			
 			return convertView;
 		}
 	 }
