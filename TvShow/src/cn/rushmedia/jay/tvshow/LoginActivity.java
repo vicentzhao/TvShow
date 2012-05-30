@@ -1,16 +1,18 @@
 package cn.rushmedia.jay.tvshow;
 
-import org.json.JSONArray;
-
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -41,7 +43,7 @@ public class LoginActivity extends BaseActivity {
 		NetworkInfo info = getAvailableNetWorkInfo(this);
 		if(info==null){
 			Toast.makeText(this, "没有网络，请检查", Toast.LENGTH_LONG).show();
-			
+			setNetWork();
 		}
 		editName = (TextView) findViewById(R.id.Editname);
 		name = editName.toString();
@@ -53,8 +55,8 @@ public class LoginActivity extends BaseActivity {
 			public void onClick(View v) {
 				NetworkInfo info = getAvailableNetWorkInfo(LoginActivity.this);
 				if(info==null){
-					
-				}
+					setNetWork();
+				}else{
 				final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
 				pd.setMessage("正在登陆");
 				pd.show();
@@ -82,8 +84,9 @@ public class LoginActivity extends BaseActivity {
 						return loginInfo;
 					}
 				}.execute();
-			}
+				}	}
 		});
+		
 		exitButton = (Button) findViewById(R.id.btnExit);
 		exitButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
@@ -119,4 +122,18 @@ public class LoginActivity extends BaseActivity {
 			return null;
 		}
 	}
+    public void setNetWork(){
+    	Builder b = new AlertDialog.Builder(LoginActivity.this).setTitle("没有可用的网络")
+                .setMessage("是否对网络进行设置？");
+        b.setPositiveButton("是", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            	startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+            }
+        }).setNeutralButton("否", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        }).show();
+    }
+ 
 }

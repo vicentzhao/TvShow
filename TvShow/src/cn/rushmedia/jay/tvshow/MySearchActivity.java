@@ -1,5 +1,6 @@
 package cn.rushmedia.jay.tvshow;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -166,8 +167,11 @@ public class MySearchActivity extends BaseActivity  {
 	       searchButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(checkedtext==null){
+						new AlertDialog.Builder(MySearchActivity.this).setTitle("请选择搜索的类别").create().show();
+					return;
+				}
 				if(checkedtext.equals("搜索话题")){
-					 
 					Intent intent = new Intent(MySearchActivity.this,SearchTopicListActivity.class);
 					keyword = Ekeyword.getText().toString();
 					intent.putExtra("compath",keyword);
