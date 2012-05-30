@@ -3,11 +3,12 @@
     package="cn.rushmedia.jay.tvshow"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /><uses-permission android:name="android.permission.INTERNET" >
     </uses-permission>
 
-    <uses-sdk android:minSdkVersion="8" />
     
 
     <application
@@ -122,7 +123,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".MyPostActivity_1"
+            android:name=".MyPostActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name" >
         </activity>

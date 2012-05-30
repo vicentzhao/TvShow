@@ -48,7 +48,7 @@ public class TableActivity extends TabActivity {
 					"Trying to intialize already initializd TabHost");
 	}
 		mTabHost=getTabHost();
-		Intent filmDisucess=new Intent(this,MyPostActivity_1.class);
+		Intent filmDisucess=new Intent(this,MyPostActivity.class);
 		Intent myHome=new Intent(this,MyHomeActivity.class);
 		Intent searchIntent= new Intent(this,MySearchActivity.class);
 		Intent tvShowIntent= new Intent(this,TvShowActivity.class);

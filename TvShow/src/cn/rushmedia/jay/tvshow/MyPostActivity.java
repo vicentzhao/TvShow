@@ -13,15 +13,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -29,7 +27,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -43,17 +40,17 @@ import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageCash;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
+import cn.rushmedia.jay.tvshow.util.ImageFileCache;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 import cn.rushmedia.jay.tvshow.util.TimeDifference;
 
-public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
+public class MyPostActivity extends BaseActivity implements OnClickListener {
 	int upid;
 	private AppData appData;
 	ViewHolder holder;
 	private List<Program> mData;
 	private JSONObject js;
 	private int userid;
-
 	private String userImagePath;
 	private String userName;
 	private JSONObject jsProgram;
@@ -79,11 +76,11 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 	private int lastItem = 0;
 	private ListView listView;
 	private LinearLayout loadingLayout;
-	// private int beginnum=0;
 	boolean isloading = false;
 	private Button tv_mytopic_previewpage;
 	private Button tv_mytopic_nextpage;
 	private String desc;
+	private ImageFileCache cache;
 	/** * 设置布局显示属性 */
 	private LayoutParams mLayoutParams = new LinearLayout.LayoutParams(
 			LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -98,53 +95,29 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 	int count = 10;
 	private ProgressBar progressBar;
 	private LinearLayout mSubjectFooter;
-
 	private boolean isFirstLoading = true;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.subjectbeifen);
 		repostList = new ArrayList<Repost>();
-		LinearLayout layout = new LinearLayout(this);
-		listView = (ListView) this.findViewById(R.id.androidlist);
-
-		LayoutInflater inflater = LayoutInflater.from(this);
-		mSubjectFooter = (LinearLayout) inflater.inflate(
-				R.layout.subject_footer, null);
-
-		tv_mytopic_previewpage = (Button) mSubjectFooter
-				.findViewById(R.id.tv_mytopic_previewpage);
-		tv_mytopic_nextpage = (Button) mSubjectFooter
-				.findViewById(R.id.tv_mytopic_nextpage);
-
-		listView.addFooterView(mSubjectFooter);
+		initView();
 		tv_mytopic_previewpage.setOnClickListener(this);
 		tv_mytopic_nextpage.setOnClickListener(this);
-
-		
-
+		intiData(page, count);
 		/**
 		 * 设置监听事件，监听listview的改变
 		 */
-		rl = (RelativeLayout) this.findViewById(R.id.loading);
-		intiData(page, count);
-		AppData appData = (AppData) getApplication();
-		appData.addActivity(this);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				System.out.println("==========>>>>>>我已被执行");
-				
-				
-				Intent intent = new Intent(MyPostActivity_1.this,
+				Intent intent = new Intent(MyPostActivity.this,
 						PostsDetialActivity.class);
-				Log.i("system", "触发点击事件");
 				MyHomeLineDiscu myHomeLineDiscu = myHomeLineDiscList
 						.get(position);
 				intent.putExtra("saydetial", myHomeLineDiscu);
 				startActivity(intent);
-
 			}
 		});
 	}
@@ -152,13 +125,29 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 	/**
 	 * 捕捉回退键
 	 */
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			showTips();
-			return false;
-		}
-		return false;
-	}
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+         if(keyCode == KeyEvent.KEYCODE_BACK){
+              if(!isExit){
+                   isExit=true;
+                   Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                   mHandler.sendEmptyMessageDelayed(0, 2000);
+              }
+              else{
+                   finish();
+                   System.exit(0);
+              }
+         }
+         return false;
+    }
+    boolean isExit=false;
+    Handler mHandler = new Handler(){
+    	@Override
+    	public void handleMessage(Message msg) {
+    		super.handleMessage(msg);
+    		isExit=false;
+    	}
+    };
 
 	/**
 	 * 为adapter初始化数据
@@ -169,27 +158,24 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 	 *            每页显示的个数
 	 */
 	private void intiData(final int page, final int count) {
-
 		myHomeLineDiscList = new ArrayList<MyHomeLineDiscu>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>() {
-			
 
 			protected void onPreExecute() {
 				showProgress(rl);
 				super.onPreExecute();
 			}
-
 			protected void onPostExecute(JSONArray result) {
 				isloading = false;
 				hideProgress(rl);
 				if (result != null) {
 					if (isFirstLoading) {
-						adapter = new MyAdapter(MyPostActivity_1.this, result);
+						adapter = new MyAdapter(MyPostActivity.this, result);
 						mSubjectFooter.setVisibility(View.VISIBLE);
-						listView.setAdapter(adapter);	
+						listView.setAdapter(adapter);
 						isFirstLoading = false;
-					}else {
+					} else {
 						mSubjectFooter.setVisibility(View.VISIBLE);
 						adapter.setData(result);
 						adapter.notifyDataSetChanged();
@@ -200,18 +186,13 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 				}
 				super.onPostExecute(result);
 			}
-
 			@Override
 			protected JSONArray doInBackground(Void... params) {
 				try {
 					appData = (AppData) getApplication();
 					logininfo = appData.getLoginInfo();
-
 					JSONObject js = new JSONObject(logininfo);
 					userid = js.getInt("id");
-
-					// String path
-					// ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/homeline";
 					String path = "http://tvsrv.webhop.net:8080/api/users/"
 							+ userid + "/homeline?page=" + page + "&count="
 							+ count + "";
@@ -315,15 +296,15 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 		private Context mContext;
 		private LayoutInflater mInflater;
 		private JSONArray array_list;
-		
+
 		public MyAdapter(Context context) {
 			this.mContext = context;
 		}
-		
-		public void setData(JSONArray jArr){
+
+		public void setData(JSONArray jArr) {
 			this.array_list = jArr;
 		}
-		
+
 		public JSONArray getData() {
 			return this.array_list;
 		}
@@ -414,16 +395,17 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 					}
 					String repostrtitle = repostjsTopic.getString("name");
 					long repostdatelong = repostjs.getLong("ct");
-					appData = (AppData) getApplication();
-					cash = new ImageCash();
-					Bitmap bitmapFromCache = cash
-							.getBitmapFromCache(repostUserImagePath);
-					if (bitmapFromCache == null) {
+					 cache= ImageFileCache.getCashInstance();
+					Bitmap UserImageCache = cache.getImage(repostUserImagePath);
+					if (UserImageCache == null) {
 						new AsyncTask<Void, Void, Bitmap>() {
 							@Override
 							protected void onPostExecute(Bitmap result) {
+								if(result!=null){
 								holder.tv_homeline_repost_userimage
 										.setImageBitmap(result);
+								cache.saveBmpToSd(result, repostUserImagePath);
+								}
 								super.onPostExecute(result);
 							}
 
@@ -431,7 +413,6 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 							protected Bitmap doInBackground(Void... params) {
 								try {
 									ImageDownloder imageDownloder = new ImageDownloder();
-
 									Bitmap repostuserimage = imageDownloder
 											.imageDownloder(repostUserImagePath);
 									mHardBitmapCache = appData
@@ -449,26 +430,24 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 						}.execute();
 					} else {
 						holder.tv_homeline_repost_userimage
-								.setImageBitmap(bitmapFromCache);
+								.setImageBitmap(UserImageCache);
 					}
-					Bitmap bitmapforcash2 = cash
-							.getBitmapFromCache(repostFilmImagePath);
-					if (bitmapforcash2 == null) {
+					
+					Bitmap FileImageCache = cache.getImage(repostFilmImagePath);
+					if (FileImageCache == null) {
 						new AsyncTask<Void, Void, Bitmap>() {
 							@Override
 							protected void onPostExecute(Bitmap result) {
 								if ("".equals(result)) {
-
 									holder.tv_homeline_repost_filmimage
 											.setImageResource(R.drawable.icon);
 								} else {
 									holder.tv_homeline_repost_filmimage
 											.setImageBitmap(result);
+									cache.saveBmpToSd(result, repostFilmImagePath);
 								}
 								super.onPostExecute(result);
-
 							}
-
 							@Override
 							protected Bitmap doInBackground(Void... params) {
 								try {
@@ -493,7 +472,7 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 						}.execute();
 					} else {
 						holder.tv_homeline_repost_filmimage
-								.setImageBitmap(bitmapforcash2);
+								.setImageBitmap(FileImageCache);
 					}
 					holder.tv_homeline_repost_username.setText(repostUserName);
 					holder.tv_homeline_repost_comment.setText(repostcomment);
@@ -617,7 +596,6 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 
 	}
 
-	
 	private void loadlessItem() {
 
 		page = page - 1;
@@ -645,5 +623,18 @@ public class MyPostActivity_1 extends BaseActivity implements OnClickListener {
 			break;
 
 		}
+	}
+	void initView(){
+		LinearLayout layout = new LinearLayout(this);
+		listView = (ListView) this.findViewById(R.id.androidlist);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		mSubjectFooter = (LinearLayout) inflater.inflate(
+				R.layout.subject_footer, null);
+		tv_mytopic_previewpage = (Button) mSubjectFooter
+				.findViewById(R.id.tv_mytopic_previewpage);
+		tv_mytopic_nextpage = (Button) mSubjectFooter
+				.findViewById(R.id.tv_mytopic_nextpage);
+		listView.addFooterView(mSubjectFooter);
+		rl = (RelativeLayout) this.findViewById(R.id.loading);
 	}
 }
