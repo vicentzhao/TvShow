@@ -24,7 +24,7 @@ public class JSONObject2Post {
 		int fs = jsPost.getInt("fs");
 		post.setFs(fs);
 		}
-		if(jsPost.isNull("topic")){
+		if(!jsPost.isNull("topic")){
 		JSONObject jsTopic = jsPost.getJSONObject("topic");
 		JSONObject2Topic jt = new JSONObject2Topic();
 		Topic topic = jt.getTopic(jsTopic);
@@ -42,7 +42,7 @@ public class JSONObject2Post {
 		int t = jsPost.getInt("t");
 		post.setT(t);
 		}
-		if(jsPost.isNull("u")){
+		if(!jsPost.isNull("u")){
 		int u = jsPost.getInt("u");
 		post.setU(u);
 		}

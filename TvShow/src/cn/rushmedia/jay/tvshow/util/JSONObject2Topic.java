@@ -35,7 +35,7 @@ public class JSONObject2Topic {
 		int topicId = jsTopic.getInt("id");
 		topic.setId(topicId);
 		}
-		if(jsTopic.isNull("favorite")){
+		if(!jsTopic.isNull("favorite")){
 		boolean topic_favorite = jsTopic.getBoolean("favorite");
 		topic.setFavorite(topic_favorite);
 		}

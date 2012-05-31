@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 import cn.rushmedia.jay.tvshow.util.TimeDifference;
 
@@ -31,7 +31,7 @@ public class PostsDetialActivity extends BaseActivity {
      private int programId;
      private int p;
      private ImageButton back_button;
-     private Post2  homeLineDiscu;
+     private Post  post;
      private ImageButton backtohome; 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,19 +39,19 @@ public class PostsDetialActivity extends BaseActivity {
 	    Intent it =getIntent();
 	    AppData ap = (AppData) getApplication();
 	    ap.addActivity(this);
-	    homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
-	    String username = homeLineDiscu.getUser().getName();
-	    String comment = homeLineDiscu.getC();
-	    long created_time = homeLineDiscu.getCreated_at();
+	    post = (Post) it.getSerializableExtra("saydetial");
+	    String username = post.getUser().getName();
+	    String comment = post.getC();
+	    long created_time = post.getCt();
 	    TimeDifference timeDifference = new TimeDifference();
-	    programId=homeLineDiscu.getTopic().getProgramid();
-	     p = homeLineDiscu.getP();
+	    programId=post.getTopic().getProgramid();
+	     p = post.getP();
 		String timeDiffence;
 		try {
 			timeDiffence = timeDifference.getTimeDiffence(created_time);
 	    initData();
-	    tv_tvshow_topicdetial_title.setText(homeLineDiscu.getTopic().getTopic_name());
-	    tv_topicdetial_comment.setText(homeLineDiscu.getC());
+	    tv_tvshow_topicdetial_title.setText(post.getTopic().getTopic_name());
+	    tv_topicdetial_comment.setText(post.getC());
 	    tv_topicdetial_current.setText(timeDiffence);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,9 +75,8 @@ public class PostsDetialActivity extends BaseActivity {
 				 ProgressDialog pd = new ProgressDialog(PostsDetialActivity.this) ;
 				pd.show();
 			Intent sameTopicIntent = new Intent(PostsDetialActivity.this,ProgramReviewListActivity_1.class);
-			sameTopicIntent.putExtra("saydetial",homeLineDiscu);
+			sameTopicIntent.putExtra("saydetial",post);
 			startActivity(sameTopicIntent);
-			
 			pd.dismiss();
 			}
 		});
@@ -89,7 +88,7 @@ public class PostsDetialActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Intent MyReviewIntent = new Intent(PostsDetialActivity.this,NewFileActivity.class);
-				MyReviewIntent.putExtra("saydetial",homeLineDiscu);
+				MyReviewIntent.putExtra("saydetial",post);
 				startActivity(MyReviewIntent);
 			}
 		});
@@ -101,7 +100,7 @@ public class PostsDetialActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 			    Intent sameTopicIntent = new Intent(PostsDetialActivity.this,SameTopicList_postActivity.class);
-			    sameTopicIntent.putExtra("saydetial",homeLineDiscu);
+			    sameTopicIntent.putExtra("saydetial",post);
 			    startActivity(sameTopicIntent);
 			    
 			}
@@ -178,7 +177,7 @@ public class PostsDetialActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PostsDetialActivity.this,PostOtherPostAcitvity.class);
-				i.putExtra("saydetial",homeLineDiscu);
+				i.putExtra("saydetial",post);
 				startActivity(i);
 			}
 		});

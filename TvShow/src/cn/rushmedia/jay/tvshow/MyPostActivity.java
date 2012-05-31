@@ -46,21 +46,10 @@ import cn.rushmedia.jay.tvshow.util.JSONObject2Post;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 import cn.rushmedia.jay.tvshow.util.TimeDifference;
 public class MyPostActivity extends BaseActivity implements OnClickListener {
-	private int upid;
 	private AppData appData;
 	private ViewHolder holder;
-	private List<Program> mData;
-	private JSONObject js;
 	private int userid;
-	private String userImagePath;
-	private String userName;
-	private JSONObject jsProgram;
-	private String filmImagePath;
-	private String filmName;
-	private String c;
-	private String rtitle;
 	private List<Post> postList;
-	private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash cash;
 	private String logininfo;
@@ -115,14 +104,22 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 					int position, long id) {
 				Intent intent = new Intent(MyPostActivity.this,
 						PostsDetialActivity.class);
-				Post myHomeLineDiscu = postList
+				Post post = postList
 						.get(position);
-				intent.putExtra("saydetial", myHomeLineDiscu);
+				intent.putExtra("saydetial", post);
 				startActivity(intent);
 			}
 		});
 	}
 
+	boolean isExit=false;
+	Handler mHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			isExit=false;
+		}
+	};
 	/**
 	 * 捕捉回退键
 	 */
@@ -141,14 +138,6 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
          }
          return false;
     }
-    boolean isExit=false;
-    Handler mHandler = new Handler(){
-    	@Override
-    	public void handleMessage(Message msg) {
-    		super.handleMessage(msg);
-    		isExit=false;
-    	}
-    };
 
 	/**
 	 * 为adapter初始化数据
@@ -326,138 +315,144 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			try {
-				if (!(array_list.getJSONObject(position)).isNull("repost")) {
-					captchaLayout = (LinearLayout) convertView
-							.findViewById(R.id.tv_homeline_repost_main);
-					captchaLayout.setVisibility(View.VISIBLE);
-					repostjs = array_list.getJSONObject(position)
-							.getJSONObject("repost");
-					JSONObject repostjsUser = repostjs.getJSONObject("user");
-					repostUserImagePath = repostjsUser.getString("image");
-					String repostUserName = repostjsUser.getString("name");
-					JSONObject repostjsTopic = repostjs.getJSONObject("topic");
-					JSONObject repostjsProgram = repostjsTopic
-							.getJSONObject("program");
-					repostFilmImagePath = repostjsProgram.getString("image");
-					if (!repostjsProgram.isNull("title")) {
-						repostfilmName = repostjsProgram.getString("title");
-					} else {
-						filmName = "极品电影";
-					}
-					if (!repostjs.isNull("c")) {
-						repostcomment = repostjs.getString("c");
-					} else {
-						repostcomment = "未知的";
-					}
-					String repostrtitle = repostjsTopic.getString("name");
-					long repostdatelong = repostjs.getLong("ct");
-					 cache= ImageFileCache.getCashInstance();
-					Bitmap UserImageCache = cache.getImage(repostUserImagePath);
-					if (UserImageCache == null) {
-						new AsyncTask<Void, Void, Bitmap>() {
-							@Override
-							protected void onPostExecute(Bitmap result) {
-								if(result!=null){
-								holder.tv_homeline_repost_userimage
-										.setImageBitmap(result);
-								cache.saveBmpToSd(result, repostUserImagePath);
-								}
-								super.onPostExecute(result);
-							}
-
-							@Override
-							protected Bitmap doInBackground(Void... params) {
-								try {
-									ImageDownloder imageDownloder = new ImageDownloder();
-									Bitmap repostuserimage = imageDownloder
-											.imageDownloder(repostUserImagePath);
-									mHardBitmapCache = appData
-											.getmHardBitmapCache();
-									mHardBitmapCache.put(repostUserImagePath,
-											repostuserimage);
-									appData.setmHardBitmapCache(mHardBitmapCache);
-									return repostuserimage;
-								} catch (Exception e) {
-									e.printStackTrace();
-									return null;
-								}
-
-							}
-						}.execute();
-					} else {
-						holder.tv_homeline_repost_userimage
-								.setImageBitmap(UserImageCache);
-					}
-					
-					Bitmap FileImageCache = cache.getImage(repostFilmImagePath);
-					if (FileImageCache == null) {
-						new AsyncTask<Void, Void, Bitmap>() {
-							@Override
-							protected void onPostExecute(Bitmap result) {
-								if ("".equals(result)) {
-									holder.tv_homeline_repost_filmimage
-											.setImageResource(R.drawable.icon);
-								} else {
-									holder.tv_homeline_repost_filmimage
-											.setImageBitmap(result);
-									cache.saveBmpToSd(result, repostFilmImagePath);
-								}
-								super.onPostExecute(result);
-							}
-							@Override
-							protected Bitmap doInBackground(Void... params) {
-								try {
-									ImageDownloder imageDownloder = new ImageDownloder();
-									if (!"".equals(repostFilmImagePath)) {
-										Bitmap repostfilmImage = imageDownloder
-												.imageDownloder(repostFilmImagePath);
-										mHardBitmapCache = appData
-												.getmHardBitmapCache();
-										mHardBitmapCache.put(
-												repostFilmImagePath,
-												repostfilmImage);
-										return repostfilmImage;
-									} else {
-										return null;
-									}
-								} catch (Exception e) {
-									e.printStackTrace();
-									return null;
-								}
-							}
-						}.execute();
-					} else {
-						holder.tv_homeline_repost_filmimage
-								.setImageBitmap(FileImageCache);
-					}
-					holder.tv_homeline_repost_username.setText(repostUserName);
-					holder.tv_homeline_repost_comment.setText(repostcomment);
-					holder.tv_homeline_repost_filmname.setText(repostfilmName);
-					holder.tv_homeline_repost_title.setText(repostrtitle);
-					TimeDifference timeDifference = new TimeDifference();
-					try {
-						String timeDiffence = timeDifference
-								.getTimeDiffence(repostdatelong);
-						holder.tv_homeline_repost_currenttime
-								.setText(timeDiffence);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			}
+//			try {
+//				if (!(array_list.getJSONObject(position)).isNull("repost")) {
+//					captchaLayout = (LinearLayout) convertView
+//							.findViewById(R.id.tv_homeline_repost_main);
+//					captchaLayout.setVisibility(View.VISIBLE);
+//					repostjs = array_list.getJSONObject(position)
+//							.getJSONObject("repost");
+//					JSONObject repostjsUser = repostjs.getJSONObject("user");
+//					repostUserImagePath = repostjsUser.getString("image");
+//					String repostUserName = repostjsUser.getString("name");
+//					JSONObject repostjsTopic = repostjs.getJSONObject("topic");
+//					JSONObject repostjsProgram = repostjsTopic
+//							.getJSONObject("program");
+//					repostFilmImagePath = repostjsProgram.getString("image");
+//					if (!repostjsProgram.isNull("title")) {
+//						repostfilmName = repostjsProgram.getString("title");
+//					} else {
+//						filmName = "极品电影";
+//					}
+//					if (!repostjs.isNull("c")) {
+//						repostcomment = repostjs.getString("c");
+//					} else {
+//						repostcomment = "未知的";
+//					}
+//					String repostrtitle = repostjsTopic.getString("name");
+//					long repostdatelong = repostjs.getLong("ct");
+//					 cache= ImageFileCache.getCashInstance();
+//					Bitmap UserImageCache = cache.getImage(repostUserImagePath);
+//					if (UserImageCache == null) {
+//						new AsyncTask<Void, Void, Bitmap>() {
+//							@Override
+//							protected void onPostExecute(Bitmap result) {
+//								if(result!=null){
+//								holder.tv_homeline_repost_userimage
+//										.setImageBitmap(result);
+//								cache.saveBmpToSd(result, repostUserImagePath);
+//								}
+//								super.onPostExecute(result);
+//							}
+//
+//							@Override
+//							protected Bitmap doInBackground(Void... params) {
+//								try {
+//									ImageDownloder imageDownloder = new ImageDownloder();
+//									Bitmap repostuserimage = imageDownloder
+//											.imageDownloder(repostUserImagePath);
+//									mHardBitmapCache = appData
+//											.getmHardBitmapCache();
+//									mHardBitmapCache.put(repostUserImagePath,
+//											repostuserimage);
+//									appData.setmHardBitmapCache(mHardBitmapCache);
+//									return repostuserimage;
+//								} catch (Exception e) {
+//									e.printStackTrace();
+//									return null;
+//								}
+//
+//							}
+//						}.execute();
+//					} else {
+//						holder.tv_homeline_repost_userimage
+//								.setImageBitmap(UserImageCache);
+//					}
+//					
+//					Bitmap FileImageCache = cache.getImage(repostFilmImagePath);
+//					if (FileImageCache == null) {
+//						new AsyncTask<Void, Void, Bitmap>() {
+//							@Override
+//							protected void onPostExecute(Bitmap result) {
+//								if ("".equals(result)) {
+//									holder.tv_homeline_repost_filmimage
+//											.setImageResource(R.drawable.icon);
+//								} else {
+//									holder.tv_homeline_repost_filmimage
+//											.setImageBitmap(result);
+//									cache.saveBmpToSd(result, repostFilmImagePath);
+//								}
+//								super.onPostExecute(result);
+//							}
+//							@Override
+//							protected Bitmap doInBackground(Void... params) {
+//								try {
+//									ImageDownloder imageDownloder = new ImageDownloder();
+//									if (!"".equals(repostFilmImagePath)) {
+//										Bitmap repostfilmImage = imageDownloder
+//												.imageDownloder(repostFilmImagePath);
+//										mHardBitmapCache = appData
+//												.getmHardBitmapCache();
+//										mHardBitmapCache.put(
+//												repostFilmImagePath,
+//												repostfilmImage);
+//										return repostfilmImage;
+//									} else {
+//										return null;
+//									}
+//								} catch (Exception e) {
+//									e.printStackTrace();
+//									return null;
+//								}
+//							}
+//						}.execute();
+//					} else {
+//						holder.tv_homeline_repost_filmimage
+//								.setImageBitmap(FileImageCache);
+//					}
+//					holder.tv_homeline_repost_username.setText(repostUserName);
+//					holder.tv_homeline_repost_comment.setText(repostcomment);
+//					holder.tv_homeline_repost_filmname.setText(repostfilmName);
+//					holder.tv_homeline_repost_title.setText(repostrtitle);
+//					TimeDifference timeDifference = new TimeDifference();
+//					try {
+//						String timeDiffence = timeDifference
+//								.getTimeDiffence(repostdatelong);
+//						holder.tv_homeline_repost_currenttime
+//								.setText(timeDiffence);
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			} catch (JSONException e1) {
+//				e1.printStackTrace();
+//			}
 			appData = (AppData) getApplication();
 			cash = new ImageCash();
 			Bitmap bitmapFromCache3 = cash
 					.getBitmapFromCache(postList.get(position)
 							.getUser().getImage());
-			if (bitmapFromCache3 == null) {
+			cache = ImageFileCache.getCashInstance();
+			final String userImagePath =postList.get(position).getUser().getImage();
+			Bitmap userImaga = cache.getImage(userImagePath);
+			if (userImaga == null) {
 				new AsyncTask<Void, Void, Bitmap>() {
 					@Override
 					protected void onPostExecute(Bitmap result) {
+						if(result!=null){
+							cache.saveBmpToSd(result, userImagePath);
 						holder.tv_homeline_userimage.setImageBitmap(result);
+						}
 						super.onPostExecute(result);
 					}
 
@@ -465,13 +460,9 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 					protected Bitmap doInBackground(Void... params) {
 						try {
 							ImageDownloder imageDownloder = new ImageDownloder();
-							String imagePath = postList.get(position)
-									.getUser().getImage();
+							
 							Bitmap userimage = imageDownloder
-									.imageDownloder(imagePath);
-							mHardBitmapCache = appData.getmHardBitmapCache();
-							mHardBitmapCache.put(imagePath, userimage);
-							appData.setmHardBitmapCache(mHardBitmapCache);
+									.imageDownloder(userImagePath);
 							return userimage;
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -481,41 +472,34 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 					}
 				}.execute();
 			} else {
-				holder.tv_homeline_userimage.setImageBitmap(bitmapFromCache3);
+				holder.tv_homeline_userimage.setImageBitmap(userImaga);
 			}
-			Bitmap bitmapforcash4 = cash.getBitmapFromCache(postList
-					.get(position).getTopic().getProgram().getImagePath());
-			if (bitmapforcash4 == null) {
+			final String programPath =postList
+			.get(position).getTopic().getProgram().getImagePath();
+			Bitmap imageProgram = cache.getImage(programPath);
+			if (imageProgram == null) {
 				new AsyncTask<Void, Void, Bitmap>() {
 					@Override
 					protected void onPostExecute(Bitmap result) {
-						if ("".equals(result)) {
+						if (result==null) {
 
 							holder.tv_homeline_filmimage
 									.setImageResource(R.drawable.icon);
 						} else {
 							holder.tv_homeline_filmimage.setImageBitmap(result);
+							cache.saveBmpToSd(result, programPath);
 						}
 						super.onPostExecute(result);
 
 					}
-
 					@Override
 					protected Bitmap doInBackground(Void... params) {
 						try {
 							ImageDownloder imageDownloder = new ImageDownloder();
-							String filmpath = postList.get(position)
-									.getTopic().getProgram().getImagePath();
-							if (!"".equals("path")) {
+						
 								Bitmap filmimage = imageDownloder
-										.imageDownloder(filmpath);
-								mHardBitmapCache = appData
-										.getmHardBitmapCache();
-								mHardBitmapCache.put(filmpath, filmimage);
+										.imageDownloder(programPath);
 								return filmimage;
-							} else {
-								return null;
-							}
 						} catch (Exception e) {
 							e.printStackTrace();
 							return null;
@@ -523,7 +507,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 					}
 				}.execute();
 			} else {
-				holder.tv_homeline_filmimage.setImageBitmap(bitmapforcash4);
+				holder.tv_homeline_filmimage.setImageBitmap(imageProgram);
 			}
 			holder.tv_homeline_username.setText(postList
 					.get(position).getUser().getName());
@@ -550,9 +534,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 		page = page + 1;
 		count = 10;
 		intiData(page, count);
-
 	}
-
 	private void loadlessItem() {
 
 		page = page - 1;

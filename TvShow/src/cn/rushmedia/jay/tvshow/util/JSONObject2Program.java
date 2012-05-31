@@ -45,7 +45,7 @@ public class JSONObject2Program {
 		String actor = jsProgram.getString("actor");
 		program.setActor(actor);
 		}
-		if(jsProgram.isNull("id")){
+		if(!jsProgram.isNull("id")){
 		int pro_id = jsProgram.getInt("id");
 		program.setId(pro_id);
 		}
