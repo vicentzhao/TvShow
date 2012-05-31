@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import cn.rushmedia.jay.tvshow.MyTopicActivity.MyAdapter;
 import cn.rushmedia.jay.tvshow.MyTopicActivity.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -61,7 +61,7 @@ public class MyPostListActivity extends BaseActivity {
 	private String filmName;
 	private String c;
 	private String rtitle;
-	private List<MyHomeLineDiscu> myHomeLineDiscList;
+	private List<Post2> myHomeLineDiscList;
 	private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash cash;
@@ -193,7 +193,7 @@ public class MyPostListActivity extends BaseActivity {
 //		}
 	private void intiData(final int page, final int count) {
 
-		myHomeLineDiscList = new ArrayList<MyHomeLineDiscu>();
+		myHomeLineDiscList = new ArrayList<Post2>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>() {
 			protected void onPreExecute() {
@@ -276,8 +276,8 @@ public class MyPostListActivity extends BaseActivity {
 							topic.setTopic_name(rtitle);
 							topic.setProgramid(programid);
 							topic.setProgram(program);
-							MyHomeLineDiscu myHomeLineDisc = new MyHomeLineDiscu();
-							MyHomeLineDiscu repostmyHomeLineDiscu = new MyHomeLineDiscu();
+							Post2 myHomeLineDisc = new Post2();
+							Post2 repostmyHomeLineDiscu = new Post2();
 							long datelong = js.getLong("ct");
 							myHomeLineDisc.setU(u);
 							myHomeLineDisc.setT(t);
@@ -317,7 +317,7 @@ public class MyPostListActivity extends BaseActivity {
 		// AppData.getInstance().setMoviesEntity(mData);
 		// Program movie = mData.get(position);
 		Log.i("system", "触发点击事件");
-		MyHomeLineDiscu myHomeLineDiscu = myHomeLineDiscList.get(position);
+		Post2 myHomeLineDiscu = myHomeLineDiscList.get(position);
 		intent.putExtra("saydetial", myHomeLineDiscu);
 		startActivity(intent);
 	}

@@ -29,7 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
@@ -65,7 +65,7 @@ public class SameTopicListActivity extends BaseActivity {
 	private Topic topic;
 	private List<Topic> topiclist;
 	private ListView listview;
-	private MyHomeLineDiscu homeLineDiscu;
+	private Post2 homeLineDiscu;
 	private ImageButton tv_topic_back_button;
 	private int page=1;
 	private int count=8;
@@ -108,7 +108,7 @@ public class SameTopicListActivity extends BaseActivity {
 						int position, long id) {
 						Intent i  = new Intent(SameTopicListActivity.this,TopicDetialActivity.class);
 						Topic topic =topiclist.get(position);
-						MyHomeLineDiscu home = new MyHomeLineDiscu();
+						Post2 home = new Post2();
 						home.setTopic(topic);
 						i.putExtra("topic", home);
 						startActivity(i);
@@ -163,7 +163,7 @@ public class SameTopicListActivity extends BaseActivity {
 		ArrayList<Topic> topicArraylist = new ArrayList<Topic>();
 		Intent it =getIntent();
 		try {
-			homeLineDiscu = (MyHomeLineDiscu) it.getSerializableExtra("saydetial");
+			homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
 		programeid = homeLineDiscu.getTopic().getProgramid();
 		JsonUtil js = new JsonUtil();
 		String sameTopicPath="http://tvsrv.webhop.net:8080/api/programs/"+programeid+"/topics?page="+page2+"&count="+count2+"";

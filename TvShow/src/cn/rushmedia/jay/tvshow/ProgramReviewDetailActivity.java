@@ -1,7 +1,7 @@
 package cn.rushmedia.jay.tvshow;
 
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.util.TimeDifference;
 import android.app.Activity;
 import android.content.Intent;
@@ -28,7 +28,7 @@ public class ProgramReviewDetailActivity extends BaseActivity {
 			AppData appData = (AppData) getApplication();
 			appData.addActivity(this);
 		    Intent it =getIntent();
-		    MyHomeLineDiscu  homeLineDiscu = (MyHomeLineDiscu) it.getSerializableExtra("sametopicdetail");
+		    Post2  homeLineDiscu = (Post2) it.getSerializableExtra("sametopicdetail");
 		    String username = homeLineDiscu.getUser().getName();
 		    String comment = homeLineDiscu.getC();
 		    long created_time = homeLineDiscu.getCreated_at();

@@ -32,7 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 
@@ -53,7 +53,7 @@ public class NewFileActivity extends BaseActivity {
 	private HttpResponse response;
 	private RelativeLayout rl;
     private Button btn_movie_new_about;
-    private MyHomeLineDiscu homeLineDiscu;
+    private Post2 homeLineDiscu;
     private Button btn_movie_exit;
     private Button movie_more;
 	@Override
@@ -64,7 +64,7 @@ public class NewFileActivity extends BaseActivity {
 		 AppData appl = (AppData)getApplication();
 		 rl=(RelativeLayout) findViewById(R.id.loading);
 		 Intent it =getIntent();
-	      homeLineDiscu = (MyHomeLineDiscu) it.getSerializableExtra("saydetial");
+	      homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
 		 try {
 			   String loginInfo = appl.getLoginInfo();
 			   if(loginInfo==null){

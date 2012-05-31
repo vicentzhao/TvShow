@@ -29,7 +29,6 @@ public class BaseActivity extends Activity {
 		String tokensecret = sp.getString("tokensecret", null);
 		super.onCreate(savedInstanceState);
 	}
-
 	/**
 	 * 弹出对话框,退出应用程序
 	 */

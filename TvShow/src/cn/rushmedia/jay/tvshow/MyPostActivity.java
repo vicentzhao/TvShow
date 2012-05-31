@@ -33,7 +33,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -41,6 +42,7 @@ import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageCash;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 import cn.rushmedia.jay.tvshow.util.ImageFileCache;
+import cn.rushmedia.jay.tvshow.util.JSONObject2Post;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 import cn.rushmedia.jay.tvshow.util.TimeDifference;
 public class MyPostActivity extends BaseActivity implements OnClickListener {
@@ -57,7 +59,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	private String filmName;
 	private String c;
 	private String rtitle;
-	private List<MyHomeLineDiscu> myHomeLineDiscList;
+	private List<Post> postList;
 	private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash cash;
@@ -113,7 +115,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 					int position, long id) {
 				Intent intent = new Intent(MyPostActivity.this,
 						PostsDetialActivity.class);
-				MyHomeLineDiscu myHomeLineDiscu = myHomeLineDiscList
+				Post myHomeLineDiscu = postList
 						.get(position);
 				intent.putExtra("saydetial", myHomeLineDiscu);
 				startActivity(intent);
@@ -157,7 +159,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	 *            每页显示的个数
 	 */
 	private void intiData(final int page, final int count) {
-		myHomeLineDiscList = new ArrayList<MyHomeLineDiscu>();
+		postList = new ArrayList<Post>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>() {
 
@@ -190,8 +192,8 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 				try {
 					appData = (AppData) getApplication();
 					logininfo = appData.getLoginInfo();
-					JSONObject js = new JSONObject(logininfo);
-					userid = js.getInt("id");
+					JSONObject jsPost = new JSONObject(logininfo);
+					userid = jsPost.getInt("id");
 					String path = "http://tvsrv.webhop.net:8080/api/users/"
 							+ userid + "/homeline?page=" + page + "&count="
 							+ count + "";
@@ -199,54 +201,10 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 					array = jsut.getSource(path);
 					if (array != null) {
 						for (int i = 0; i < array.length(); i++) {
-							js = array.getJSONObject(i);
-							JSONObject jsUser = js.getJSONObject("user");
-							userImagePath = jsUser.getString("image");
-							userName = jsUser.getString("name");
-							User user = new User();
-							user.setImage(userImagePath);
-							user.setName(userName);
-							JSONObject jsTopic = js.getJSONObject("topic");
-							jsProgram = jsTopic.getJSONObject("program");
-							filmImagePath = jsProgram.getString("image");
-							desc = jsProgram.getString("description");
-							if (!jsProgram.isNull("title")) {
-								filmName = jsProgram.getString("title");
-								// filmid=jsProgram.getInt("id");
-							} else {
-								filmName = "极品电影";
-							}
-							Program program = new Program();
-							program.setImagePath(filmImagePath);
-							program.setTitle(filmName);
-							program.setDescription(desc);
-							// program.setId(filmid);
-							if (!js.isNull("c")) {
-								c = js.getString("c");
-							} else {
-								c = "未知的";
-							}
-							int u = js.getInt("u");
-							int p = js.getInt("p");
-							int t = js.getInt("t");
-							rtitle = jsTopic.getString("name");
-							int programid = jsTopic.getInt("programid");
-							Topic topic = new Topic();
-							topic.setTopic_name(rtitle);
-							topic.setProgramid(programid);
-							topic.setProgram(program);
-							MyHomeLineDiscu myHomeLineDisc = new MyHomeLineDiscu();
-							MyHomeLineDiscu repostmyHomeLineDiscu = new MyHomeLineDiscu();
-							long datelong = js.getLong("ct");
-							myHomeLineDisc.setU(u);
-							myHomeLineDisc.setT(t);
-							myHomeLineDisc.setP(p);
-							myHomeLineDisc.setC(c);
-							myHomeLineDisc.setTopic(topic);
-							myHomeLineDisc.setCreated_at(datelong);
-							myHomeLineDisc.setUser(user);
-							myHomeLineDisc.setTopic(topic);
-							myHomeLineDiscList.add(myHomeLineDisc);
+							jsPost = array.getJSONObject(i);
+							JSONObject2Post jp = new JSONObject2Post();
+							Post post = jp.getPost(jsPost);
+							postList.add(post);
 						}
 						return array;
 
@@ -316,7 +274,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 
 		@Override
 		public int getCount() {
-			return myHomeLineDiscList.size();
+			return postList.size();
 		}
 
 		public Object getItem(int arg0) {
@@ -493,7 +451,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			appData = (AppData) getApplication();
 			cash = new ImageCash();
 			Bitmap bitmapFromCache3 = cash
-					.getBitmapFromCache(myHomeLineDiscList.get(position)
+					.getBitmapFromCache(postList.get(position)
 							.getUser().getImage());
 			if (bitmapFromCache3 == null) {
 				new AsyncTask<Void, Void, Bitmap>() {
@@ -507,7 +465,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 					protected Bitmap doInBackground(Void... params) {
 						try {
 							ImageDownloder imageDownloder = new ImageDownloder();
-							String imagePath = myHomeLineDiscList.get(position)
+							String imagePath = postList.get(position)
 									.getUser().getImage();
 							Bitmap userimage = imageDownloder
 									.imageDownloder(imagePath);
@@ -525,7 +483,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			} else {
 				holder.tv_homeline_userimage.setImageBitmap(bitmapFromCache3);
 			}
-			Bitmap bitmapforcash4 = cash.getBitmapFromCache(myHomeLineDiscList
+			Bitmap bitmapforcash4 = cash.getBitmapFromCache(postList
 					.get(position).getTopic().getProgram().getImagePath());
 			if (bitmapforcash4 == null) {
 				new AsyncTask<Void, Void, Bitmap>() {
@@ -546,7 +504,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 					protected Bitmap doInBackground(Void... params) {
 						try {
 							ImageDownloder imageDownloder = new ImageDownloder();
-							String filmpath = myHomeLineDiscList.get(position)
+							String filmpath = postList.get(position)
 									.getTopic().getProgram().getImagePath();
 							if (!"".equals("path")) {
 								Bitmap filmimage = imageDownloder
@@ -567,15 +525,15 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			} else {
 				holder.tv_homeline_filmimage.setImageBitmap(bitmapforcash4);
 			}
-			holder.tv_homeline_username.setText(myHomeLineDiscList
+			holder.tv_homeline_username.setText(postList
 					.get(position).getUser().getName());
-			holder.tv_homeline_comment.setText(myHomeLineDiscList.get(position)
+			holder.tv_homeline_comment.setText(postList.get(position)
 					.getC());
-			holder.tv_homeline_filmname.setText(myHomeLineDiscList
+			holder.tv_homeline_filmname.setText(postList
 					.get(position).getTopic().getProgram().getTitle());
-			holder.tv_homeline_title.setText(myHomeLineDiscList.get(position)
+			holder.tv_homeline_title.setText(postList.get(position)
 					.getTopic().getTopic_name());
-			long create_time = myHomeLineDiscList.get(position).getCreated_at();
+			long create_time = postList.get(position).getCt();
 			TimeDifference timeDifference = new TimeDifference();
 			try {
 				String timeDiffence = timeDifference
@@ -609,7 +567,6 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	}
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.tv_mytopic_previewpage:
 			mSubjectFooter.setVisibility(View.GONE);

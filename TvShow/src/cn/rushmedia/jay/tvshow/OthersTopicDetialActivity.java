@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
@@ -31,7 +31,7 @@ public class OthersTopicDetialActivity extends BaseActivity {
 	private Button tv_sametopic_backtohome;
 	private Button tv_sametopic_disctopic;
 	private Button tv_sametopic_topicpost;
-	private MyHomeLineDiscu home;
+	private Post2 home;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -41,7 +41,7 @@ public class OthersTopicDetialActivity extends BaseActivity {
 		AppData ap = (AppData) getApplication();
 		ap.addActivity(this);
 	    Intent i = getIntent();
-	   home = (MyHomeLineDiscu) i.getSerializableExtra("topic");
+	   home = (Post2) i.getSerializableExtra("topic");
 	    final Topic topic = home.getTopic();
 	    back_button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -89,7 +89,7 @@ public class OthersTopicDetialActivity extends BaseActivity {
 	    	tv_topicdetial_programdetail.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MyHomeLineDiscu homeLineDiscu  = new MyHomeLineDiscu();
+				Post2 homeLineDiscu  = new Post2();
 				homeLineDiscu.setTopic(topic);
 				Intent MyReviewIntent = new Intent(OthersTopicDetialActivity.this,NewFile_topic_Activity.class);
 				MyReviewIntent.putExtra("saydetial",homeLineDiscu);

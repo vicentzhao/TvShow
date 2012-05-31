@@ -2,7 +2,7 @@ package cn.rushmedia.jay.tvshow.domain;
 
 import java.io.Serializable;
 
-public class MyHomeLineDiscu implements Serializable{
+public class Post2 implements Serializable{
 	private String timeDiffence;
     private Comment comment;
 	private String c;

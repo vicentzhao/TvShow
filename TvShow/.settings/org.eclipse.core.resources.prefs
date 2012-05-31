@@ -1,9 +1,7 @@
-<<<<<<< HEAD
-#Thu Apr 05 09:42:12 CST 2012
+#Thu May 31 17:58:56 CST 2012
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=refs/remotes/choose_remote_name/mike
 eclipse.preferences.version=1
-encoding/<project>=GBK
-=======
-#Fri May 25 14:32:59 CST 2012
-eclipse.preferences.version=1
+encoding//src/cn/rushmedia/jay/tvshow/domain/Program.java=UTF-8
 encoding/<project>=gbk
->>>>>>> refs/remotes/choose_remote_name/mike

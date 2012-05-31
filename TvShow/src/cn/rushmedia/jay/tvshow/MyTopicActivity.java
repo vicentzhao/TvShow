@@ -25,7 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -49,7 +49,7 @@ import cn.rushmedia.jay.tvshow.util.TimeDifference;
 		private String filmName;
 		private String c;
 		private String rtitle;
-	    private List<MyHomeLineDiscu> myHomeLineDiscList;
+	    private List<Post2> myHomeLineDiscList;
 	    private LinearLayout captchaLayout;
 		private HashMap<String, Bitmap> mHardBitmapCache;
 		private ImageCash  cash;
@@ -66,7 +66,7 @@ import cn.rushmedia.jay.tvshow.util.TimeDifference;
  		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.subject);
-			myHomeLineDiscList =new ArrayList<MyHomeLineDiscu>();
+			myHomeLineDiscList =new ArrayList<Post2>();
 			 repostList = new ArrayList<Repost>();
 			
 			 AppData  appData =(AppData) getApplication();
@@ -107,7 +107,6 @@ import cn.rushmedia.jay.tvshow.util.TimeDifference;
 					   filmImagePath=jsProgram.getString("image");
 					   if(!jsProgram.isNull("title")){
 					   filmName=jsProgram.getString("title");
-	//				   filmid=jsProgram.getInt("id");
 					   }else{
 						   filmName="极品电影";
 					   }
@@ -129,8 +128,8 @@ import cn.rushmedia.jay.tvshow.util.TimeDifference;
 					   topic.setTopic_name(rtitle);
 					   topic.setProgramid(programid);
 					   topic.setProgram(program);
-					   MyHomeLineDiscu myHomeLineDisc = new MyHomeLineDiscu();
-					   MyHomeLineDiscu repostmyHomeLineDiscu =  new MyHomeLineDiscu();
+					   Post2 myHomeLineDisc = new Post2();
+					   Post2 repostmyHomeLineDiscu =  new Post2();
 					   long datelong = js.getLong("ct");
 					   myHomeLineDisc.setU(u);
 					   myHomeLineDisc.setT(t);
@@ -160,7 +159,7 @@ import cn.rushmedia.jay.tvshow.util.TimeDifference;
 			Intent intent = new Intent(MyTopicActivity.this,PostsDetialActivity.class);
 			//AppData.getInstance().setMoviesEntity(mData);
 			//Program movie = mData.get(position);
-			MyHomeLineDiscu myHomeLineDiscu =myHomeLineDiscList.get(position);
+			Post2 myHomeLineDiscu =myHomeLineDiscList.get(position);
 			intent.putExtra("saydetial",myHomeLineDiscu);
 			startActivity(intent);
 		}

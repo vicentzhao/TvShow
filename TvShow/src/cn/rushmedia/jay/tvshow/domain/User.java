@@ -17,7 +17,7 @@ public class User implements Serializable{
 	private int posts;
 	private int myreposts;
 	private int followers;
-	private int favorite1_topics;
+	private int favorite_topics;
 	private long created_at;
 	private int id;
 	private String image;
@@ -102,11 +102,11 @@ public class User implements Serializable{
 	public void setFollowers(int followers) {
 		this.followers = followers;
 	}
-	public int getFavorite1_topics() {
-		return favorite1_topics;
+	public int getFavorite_topics() {
+		return favorite_topics;
 	}
-	public void setFavorite1_topics(int favorite1_topics) {
-		this.favorite1_topics = favorite1_topics;
+	public void setFavorite_topics(int favorite1_topics) {
+		this.favorite_topics = favorite1_topics;
 	}
 	public long getCreated_at() {
 		return created_at;

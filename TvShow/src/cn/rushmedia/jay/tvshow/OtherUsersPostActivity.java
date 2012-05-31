@@ -37,7 +37,7 @@ import android.widget.LinearLayout.LayoutParams;
 import cn.rushmedia.jay.tvshow.MyPostListActivity_1.MyAdapter;
 import cn.rushmedia.jay.tvshow.MyPostListActivity_1.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -62,7 +62,7 @@ public class OtherUsersPostActivity extends BaseActivity {
 	private String filmName;
 	private String c;
 	private String rtitle;
-    private List<MyHomeLineDiscu> myHomeLineDiscList;
+    private List<Post2> myHomeLineDiscList;
     private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash  cash;
@@ -109,7 +109,7 @@ public class OtherUsersPostActivity extends BaseActivity {
 					System.out.println("==========>>>>>>我已被执行");
 					Intent intent = new Intent(getApplicationContext(),PostsDetialActivity.class);
 					Log.i("system", "触发点击事件");
-					MyHomeLineDiscu myHomeLineDiscu =myHomeLineDiscList.get(position);
+					Post2 myHomeLineDiscu =myHomeLineDiscList.get(position);
 					intent.putExtra("saydetial",myHomeLineDiscu);
 					startActivity(intent);
 					
@@ -177,7 +177,7 @@ public class OtherUsersPostActivity extends BaseActivity {
 		 * @param count  每页显示的个数
 		 */
 	private void intiData(final int page,final int count) {
-		myHomeLineDiscList =new ArrayList<MyHomeLineDiscu>();
+		myHomeLineDiscList =new ArrayList<Post2>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>(){
 			protected void onPreExecute() {
@@ -256,8 +256,8 @@ public class OtherUsersPostActivity extends BaseActivity {
 						   topic.setTopic_name(rtitle);
 						   topic.setProgramid(programid);
 						   topic.setProgram(program);
-						   MyHomeLineDiscu myHomeLineDisc = new MyHomeLineDiscu();
-						   MyHomeLineDiscu repostmyHomeLineDiscu =  new MyHomeLineDiscu();
+						   Post2 myHomeLineDisc = new Post2();
+						   Post2 repostmyHomeLineDiscu =  new Post2();
 						   long datelong = js.getLong("ct");
 						   myHomeLineDisc.setU(u);
 						   myHomeLineDisc.setT(t);

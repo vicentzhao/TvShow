@@ -31,7 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -56,7 +56,7 @@ public class ProgramReviewListActivity_1 extends BaseActivity {
 	private String filmName;
 	private String c;
 	private String rtitle;
-    private MyHomeLineDiscu discu;
+    private Post2 discu;
     private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash  cash;
@@ -80,7 +80,7 @@ public class ProgramReviewListActivity_1 extends BaseActivity {
 	private Button tv_mytopic_nextpage;
 	private String desc;
 	private User userInfo;
-	ArrayList<MyHomeLineDiscu> intiData;
+	ArrayList<Post2> intiData;
 	RelativeLayout rl;
 	int page = 1;
 	int count = 8;
@@ -123,7 +123,7 @@ public class ProgramReviewListActivity_1 extends BaseActivity {
 		   		}
 		   	});
 		 Intent i =getIntent();
-		 discu= (MyHomeLineDiscu) i.getSerializableExtra("saydetial");
+		 discu= (Post2) i.getSerializableExtra("saydetial");
 			rl = (RelativeLayout) this.findViewById(R.id.loading);
 			intiData = intiData(page,count);
 			if(intiData==null){
@@ -137,7 +137,7 @@ public class ProgramReviewListActivity_1 extends BaseActivity {
 					System.out.println("==========>>>>>>我已被执行");
 					Intent intent = new Intent(getApplicationContext(),PostsDetialActivity.class);
 					Log.i("system", "触发点击事件");
-					MyHomeLineDiscu myHomeLineDiscu =intiData.get(position);
+					Post2 myHomeLineDiscu =intiData.get(position);
 					intent.putExtra("saydetial",myHomeLineDiscu);
 					startActivity(intent);
 					
@@ -168,12 +168,12 @@ public class ProgramReviewListActivity_1 extends BaseActivity {
 		 * @param page  页数
 		 * @param count  每页显示的个数
 		 */
-	private ArrayList<MyHomeLineDiscu> intiData(final int page,final int count) {
+	private ArrayList<Post2> intiData(final int page,final int count) {
 		final int programid;
-		final ArrayList<MyHomeLineDiscu>	myHomeLine =new ArrayList<MyHomeLineDiscu>();
+		final ArrayList<Post2>	myHomeLine =new ArrayList<Post2>();
 					Intent userIntent = getIntent();
-					MyHomeLineDiscu home;
-					home= (MyHomeLineDiscu) userIntent.getSerializableExtra("saydetial");
+					Post2 home;
+					home= (Post2) userIntent.getSerializableExtra("saydetial");
 					programid =home.getTopic().getProgramid();
 					new AsyncTask<Void, Void, ArrayList>(){
 						
@@ -201,7 +201,7 @@ public class ProgramReviewListActivity_1 extends BaseActivity {
 							int p = 0;
 							int t = 0;
 							Topic topic = null;
-							MyHomeLineDiscu myHomeLineDisc = null;
+							Post2 myHomeLineDisc = null;
 							long datelong = 0;
 							try {
 								js =array.getJSONObject(i);
@@ -242,8 +242,8 @@ public class ProgramReviewListActivity_1 extends BaseActivity {
 								   topic.setProgramid(programid);
 								   topic.setProgram(program);
 								   topic.setUser(user);
-								   myHomeLineDisc = new MyHomeLineDiscu();
-								   MyHomeLineDiscu repostmyHomeLineDiscu =  new MyHomeLineDiscu();
+								   myHomeLineDisc = new Post2();
+								   Post2 repostmyHomeLineDiscu =  new Post2();
 								   datelong = js.getLong("ct");
 								   myHomeLineDisc.setU(u);
 							} catch (JSONException e) {

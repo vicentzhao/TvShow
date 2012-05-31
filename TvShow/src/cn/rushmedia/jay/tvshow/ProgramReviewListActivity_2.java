@@ -38,7 +38,7 @@ import android.widget.LinearLayout.LayoutParams;
 import cn.rushmedia.jay.tvshow.MyPostActivity.MyAdapter;
 import cn.rushmedia.jay.tvshow.MyPostActivity.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -63,7 +63,7 @@ public class ProgramReviewListActivity_2 extends BaseActivity{
 	private String filmName;
 	private String c;
 	private String rtitle;
-    private List<MyHomeLineDiscu> myHomeLineDiscList;
+    private List<Post2> myHomeLineDiscList;
     private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash  cash;
@@ -87,8 +87,8 @@ public class ProgramReviewListActivity_2 extends BaseActivity{
 	private Button tv_mytopic_nextpage;
 	private int programid;
 	String fileDesc;
-	MyHomeLineDiscu myHomeLineDiscu ;
-	MyHomeLineDiscu home ;
+	Post2 myHomeLineDiscu ;
+	Post2 home ;
 	RelativeLayout rl;
 	int page = 1;
 	int count = 8;
@@ -124,7 +124,7 @@ public class ProgramReviewListActivity_2 extends BaseActivity{
 	    	tv_reprogram_button.setOnClickListener(new OnClickListener() {
 	    		public void onClick(View v) {
 	    			 Intent sc =getIntent();
-					 home = (MyHomeLineDiscu)sc.getSerializableExtra("saydetial");
+					 home = (Post2)sc.getSerializableExtra("saydetial");
 	    			Intent i = new Intent(ProgramReviewListActivity_2.this,TopicDetialActivity.class);
 	    			i.putExtra("topic",home);
 	    			startActivity(i);
@@ -234,7 +234,7 @@ listView.setSelection(lastItem - 1);//设置listview的当前位置，如果不设置每次加载
 		 */
 	private void intiData(final int page,final int count) {
 		
-		myHomeLineDiscList =new ArrayList<MyHomeLineDiscu>();
+		myHomeLineDiscList =new ArrayList<Post2>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>(){
 			protected void onPreExecute() {
@@ -266,7 +266,7 @@ listView.setSelection(lastItem - 1);//设置listview的当前位置，如果不设置每次加载
 				try {
 	                  
 					 Intent it =getIntent();
-					 MyHomeLineDiscu homeLiMyHomeLineDiscuneDiscu =(MyHomeLineDiscu)it.getSerializableExtra("saydetial");
+					 Post2 homeLiMyHomeLineDiscuneDiscu =(Post2)it.getSerializableExtra("saydetial");
 					 programid =homeLiMyHomeLineDiscuneDiscu.getTopic().getProgramid();
 					//	String path ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/homeline";
 						String path ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page="+page+"&count="+count+"";
@@ -311,8 +311,8 @@ listView.setSelection(lastItem - 1);//设置listview的当前位置，如果不设置每次加载
 						   topic.setTopic_name(rtitle);
 						   topic.setProgramid(programid);
 						   topic.setProgram(program);
-						   MyHomeLineDiscu myHomeLineDisc = new MyHomeLineDiscu();
-						   MyHomeLineDiscu repostmyHomeLineDiscu =  new MyHomeLineDiscu();
+						   Post2 myHomeLineDisc = new Post2();
+						   Post2 repostmyHomeLineDiscu =  new Post2();
 						   long datelong = js.getLong("ct");
 						   myHomeLineDisc.setU(u);
 						   myHomeLineDisc.setT(t);

@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 import cn.rushmedia.jay.tvshow.util.TimeDifference;
 
@@ -31,7 +31,7 @@ public class PostsDetialActivity extends BaseActivity {
      private int programId;
      private int p;
      private ImageButton back_button;
-     private MyHomeLineDiscu  homeLineDiscu;
+     private Post2  homeLineDiscu;
      private ImageButton backtohome; 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,7 +39,7 @@ public class PostsDetialActivity extends BaseActivity {
 	    Intent it =getIntent();
 	    AppData ap = (AppData) getApplication();
 	    ap.addActivity(this);
-	    homeLineDiscu = (MyHomeLineDiscu) it.getSerializableExtra("saydetial");
+	    homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
 	    String username = homeLineDiscu.getUser().getName();
 	    String comment = homeLineDiscu.getC();
 	    long created_time = homeLineDiscu.getCreated_at();

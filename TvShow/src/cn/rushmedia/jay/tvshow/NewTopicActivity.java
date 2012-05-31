@@ -17,10 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 
 public class NewTopicActivity extends BaseActivity {
-	 private MyHomeLineDiscu  homeLineDiscu;
+	 private Post2  homeLineDiscu;
 	  private String content;
 	  int  programid;
 	  int  userid;
@@ -30,7 +30,7 @@ public class NewTopicActivity extends BaseActivity {
 		AppData appl = (AppData) getApplication();
 		appl.addActivity(this);
 	    Intent it =getIntent();
-	      homeLineDiscu = (MyHomeLineDiscu) it.getSerializableExtra("saydetial");
+	      homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
 	      programid= homeLineDiscu.getTopic().getProgramid();
 	     
 	      final EditText tv_post2other_content ;

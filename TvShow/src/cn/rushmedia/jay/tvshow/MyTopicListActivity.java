@@ -31,7 +31,7 @@ import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.TopicListActivity.MyAdapter;
 import cn.rushmedia.jay.tvshow.TopicListActivity.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
@@ -90,7 +90,7 @@ public class MyTopicListActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				 Intent i = new Intent(getApplicationContext(),TopicDetialActivity.class);
-				 MyHomeLineDiscu home = new MyHomeLineDiscu();
+				 Post2 home = new Post2();
 				 Topic topic =topicArraylist.get(position);
 				 home.setTopic(topic);
 				 i.putExtra("topic", home);
@@ -120,8 +120,6 @@ public class MyTopicListActivity extends BaseActivity {
 	   	
 	   	 Button tv_prepage=(Button) findViewById(R.id.tv_prepage);
 	   	 tv_prepage.setOnClickListener(new OnClickListener() {
-	   		
-	   		@Override
 	   		public void onClick(View v) {
 	   			if(page==1){
 	   				 Toast.makeText(getApplicationContext(), "已经是第一页", 1).show();
@@ -142,11 +140,7 @@ public class MyTopicListActivity extends BaseActivity {
 	   		   intiData(page, count);
 	   		myAdapter.notifyDataSetChanged();
 	   		}
-
-			
 	   	});
-		
-			
 	}
 	private void intiData(final int page, final int count) {
 		 new AsyncTask<Void, Void, List>(){
@@ -155,7 +149,6 @@ public class MyTopicListActivity extends BaseActivity {
 					showProgress(r1);
 					super.onPreExecute();
 				}
-				@Override
 				protected void onPostExecute(List result) {
 					hideProgress(r1);
 					myAdapter= new MyAdapter(getApplicationContext(),result);
@@ -163,7 +156,6 @@ public class MyTopicListActivity extends BaseActivity {
 					listview.setAdapter(myAdapter);
 					myAdapter.notifyDataSetChanged();
 				}
-				@Override
 				protected List doInBackground(Void... params) {
 					try {
 						AppData ap =(AppData) getApplication();
@@ -171,7 +163,6 @@ public class MyTopicListActivity extends BaseActivity {
 						JSONObject os = new JSONObject(loginInfo);
 						int userid = os.getInt("id");
 						JsonUtil js = new JsonUtil();
-						//http://tvsrv.webhop.net:8080/api/users/1/topics
 						String sameTopicPath="http://tvsrv.webhop.net:8080/api/users/"+userid+"/topics?"+"page="+page+"&count="+count+"";
 						sameTopic = js.getSource(sameTopicPath);
 						topicArraylist = new ArrayList<Topic>();
@@ -213,23 +204,12 @@ public class MyTopicListActivity extends BaseActivity {
 						 try {
 							bitmap = imageDownloder.imageDownloder(imagepath);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					return topicArraylist;
 				}
 			 }.execute();
 	}
-//	/**
-//	 * 捕捉回退键
-//	 */
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-//			showTips();
-//		return false;
-//		}
-//		return false;
-//		}
 
 			public final class ViewHolder{
 				public ImageView tv_sametopiclist_userimage;

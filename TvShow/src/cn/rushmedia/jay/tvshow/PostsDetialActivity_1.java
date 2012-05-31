@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.util.TimeDifference;
 
 public class PostsDetialActivity_1 extends BaseActivity {
@@ -25,12 +25,12 @@ public class PostsDetialActivity_1 extends BaseActivity {
      private Button tv_sametopic_backtohome;
      private Button tv_sametopic_idicupost;
      private  int programId;
-     private MyHomeLineDiscu  homeLineDiscu;
+     private Post2  homeLineDiscu;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.postdetail);
 	    Intent it =getIntent();
-	    homeLineDiscu = (MyHomeLineDiscu) it.getSerializableExtra("saydetial");
+	    homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
 	    String username = homeLineDiscu.getUser().getName();
 	    String comment = homeLineDiscu.getC();
 	    long created_time = homeLineDiscu.getCreated_at();

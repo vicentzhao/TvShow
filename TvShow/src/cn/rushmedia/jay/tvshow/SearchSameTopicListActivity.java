@@ -30,7 +30,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import cn.rushmedia.jay.tvshow.SameTopicListActivity.MyAdapter;
 import cn.rushmedia.jay.tvshow.SameTopicListActivity.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
@@ -66,7 +66,7 @@ public class SearchSameTopicListActivity extends BaseActivity {
 	private Topic topic;
 	private List<Topic> topicArraylist;
 	private ListView listview;
-	private MyHomeLineDiscu homeLineDiscu;
+	private Post2 homeLineDiscu;
 	private ImageButton tv_topic_back_button;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,7 +79,7 @@ public class SearchSameTopicListActivity extends BaseActivity {
 		topicArraylist = new ArrayList<Topic>();
 			Intent it =getIntent();
 			try {
-				homeLineDiscu = (MyHomeLineDiscu) it.getSerializableExtra("saydetial");
+				homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
 			programeid = homeLineDiscu.getTopic().getProgramid();
 			JsonUtil js = new JsonUtil();
 			String sameTopicPath="http://tvsrv.webhop.net:8080/api/programs/"+programeid+"/topics";
@@ -136,7 +136,7 @@ public class SearchSameTopicListActivity extends BaseActivity {
 						int position, long id) {
 						Intent i  = new Intent(SearchSameTopicListActivity.this,TopicDetialActivity.class);
 						Topic topic =topicArraylist.get(position);
-						MyHomeLineDiscu home = new MyHomeLineDiscu();
+						Post2 home = new Post2();
 						home.setTopic(topic);
 						i.putExtra("topic", home);
 						startActivity(i);

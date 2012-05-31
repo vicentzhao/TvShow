@@ -38,7 +38,7 @@ import android.widget.LinearLayout.LayoutParams;
 import cn.rushmedia.jay.tvshow.ProgramReviewListActivity_1.MyAdapter;
 import cn.rushmedia.jay.tvshow.ProgramReviewListActivity_1.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.MyHomeLineDiscu;
+import cn.rushmedia.jay.tvshow.domain.Post2;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -63,7 +63,7 @@ public class DiscPostActivity extends BaseActivity {
 	private String filmName;
 	private String c;
 	private String rtitle;
-    private List<MyHomeLineDiscu> myHomeLineDiscList;
+    private List<Post2> myHomeLineDiscList;
     private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash  cash;
@@ -86,10 +86,7 @@ public class DiscPostActivity extends BaseActivity {
 	private Button tv_mytopic_previewpage;
 	private Button tv_mytopic_nextpage;
 	private int programid;
-	private MyHomeLineDiscu homeLineDiscu;
-
-	
-
+	private Post2 homeLineDiscu;
 	RelativeLayout rl;
 	int page = 1;
 	int count = 8;
@@ -187,7 +184,7 @@ public class DiscPostActivity extends BaseActivity {
 					System.out.println("==========>>>>>>我已被执行");
 					Intent intent = new Intent(DiscPostActivity.this,PostsDetialActivity_1.class);
 					Log.i("system", "触发点击事件");
-					MyHomeLineDiscu myHomeLineDiscu =myHomeLineDiscList.get(position);
+					Post2 myHomeLineDiscu =myHomeLineDiscList.get(position);
 					intent.putExtra("saydetial",myHomeLineDiscu);
 					startActivity(intent);
 				}
@@ -203,7 +200,6 @@ public class DiscPostActivity extends BaseActivity {
 					
 				}
 			});
-		
 	}
 		/**
 		 * 为adapter初始化数据
@@ -212,7 +208,7 @@ public class DiscPostActivity extends BaseActivity {
 		 */
 	private void intiData(final int page,final int count) {
 		
-		myHomeLineDiscList =new ArrayList<MyHomeLineDiscu>();
+		myHomeLineDiscList =new ArrayList<Post2>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>(){
 			protected void onPreExecute() {
@@ -244,7 +240,7 @@ public class DiscPostActivity extends BaseActivity {
 				try {
 	                  
 					Intent it =getIntent();
-				   homeLineDiscu = (MyHomeLineDiscu) it.getSerializableExtra("saydetial");
+				   homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
 					//	String path ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/homeline";
 				   int p2 = homeLineDiscu.getP();
 						String path ="http://tvsrv.webhop.net:8080/api/posts/"+p2+"/comments?page="+page+"&count="+count+"";
@@ -288,8 +284,8 @@ public class DiscPostActivity extends BaseActivity {
 						   topic.setTopic_name(rtitle);
 						   topic.setProgramid(programid);
 						   topic.setProgram(program);
-						   MyHomeLineDiscu myHomeLineDisc = new MyHomeLineDiscu();
-						   MyHomeLineDiscu repostmyHomeLineDiscu =  new MyHomeLineDiscu();
+						   Post2 myHomeLineDisc = new Post2();
+						   Post2 repostmyHomeLineDiscu =  new Post2();
 						   long datelong = js.getLong("ct");
 						   myHomeLineDisc.setU(u);
 						   myHomeLineDisc.setT(t);
