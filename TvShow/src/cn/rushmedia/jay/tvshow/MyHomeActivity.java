@@ -19,7 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageCash;
@@ -162,7 +162,7 @@ public class MyHomeActivity extends BaseActivity {
 			public void onClick(View v) {
 				Intent myPostListIntent = new Intent(MyHomeActivity.this,
 						MyPostListActivity_1.class);
-				Post2 home = new Post2();
+				Post home = new Post();
 				try {
 					JSONObject js = new JSONObject(loginInfo);
 					String username = js.getString("name");
@@ -256,7 +256,7 @@ public class MyHomeActivity extends BaseActivity {
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(),
 						MyPostListActivity_1.class);
-				Post2 home = new Post2();
+				Post home = new Post();
 				try {
 					JSONObject js = new JSONObject(loginInfo);
 					String username = js.getString("name");

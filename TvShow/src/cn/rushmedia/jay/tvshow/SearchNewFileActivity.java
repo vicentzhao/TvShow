@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 
@@ -45,7 +45,7 @@ public class SearchNewFileActivity extends BaseActivity {
 	private RelativeLayout rl;
     private Button btn_movie_new_about;
     private Button btn_movie_say;
-    private Post2 homeLineDiscu;
+    private Post homeLineDiscu;
     private Button btn_movie_exit;
     private Button movie_more;
 	@Override
@@ -57,7 +57,7 @@ public class SearchNewFileActivity extends BaseActivity {
 		 appl.addActivity(this);
 		 rl=(RelativeLayout) findViewById(R.id.loading);
 		 Intent it =getIntent();
-	      homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
+	      homeLineDiscu = (Post) it.getSerializableExtra("saydetial");
 		 try {
 			   String loginInfo = appl.getLoginInfo();
 				JSONObject  loginuserjs = new JSONObject(loginInfo);
@@ -148,8 +148,8 @@ public class SearchNewFileActivity extends BaseActivity {
 	    movie_more.setOnClickListener(new OnClickListener() {
 	    	@Override
 	    	public void onClick(View v) {
-	    		Intent sameTopicIntent = new Intent(SearchNewFileActivity.this,ProgramReviewListActivity_1.class);
-				sameTopicIntent.putExtra("programid", programid);
+	    		Intent sameTopicIntent = new Intent(SearchNewFileActivity.this,MyPostActivity.class);
+				sameTopicIntent.putExtra("saydetial", homeLineDiscu);
 				startActivity(sameTopicIntent);
 				
 	    	}

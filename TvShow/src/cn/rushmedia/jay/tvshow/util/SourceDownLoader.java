@@ -9,6 +9,7 @@ public class SourceDownLoader {
 	public static JSONArray getall(String path) throws Exception {
         URL url =new URL(path);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(5000);
         InputStream is = conn.getInputStream();
         String  json = ju.InputStreamTOString(is);
         JSONArray js = new JSONArray(json);
@@ -17,6 +18,7 @@ public class SourceDownLoader {
 	public static String getallString(String path) throws Exception {
         URL url =new URL(path);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(5000);
         InputStream is = conn.getInputStream();
         String  json = ju.InputStreamTOString(is);
 		return json;  

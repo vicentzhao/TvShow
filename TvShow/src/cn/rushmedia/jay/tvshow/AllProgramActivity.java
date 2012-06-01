@@ -1,7 +1,9 @@
 package cn.rushmedia.jay.tvshow;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,28 +28,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 import cn.rushmedia.jay.tvshow.util.ImageFileCache;
+import cn.rushmedia.jay.tvshow.util.JSONObject2Post;
+import cn.rushmedia.jay.tvshow.util.JSONObject2Program;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 
 public class AllProgramActivity extends BaseActivity {
 
-	List<Program> mData;
-	ListView listview;
-	ViewHolder holder;
+	private ListView listview;
+	private ViewHolder holder;
 	private AppData appData;
 	private String logininfo;
 	private RelativeLayout rl;
-	MyAdapter adapter;
-	int page = 1;
-	int count = 20;
+	private MyAdapter adapter;
+	private int page = 1;
+	private int count = 20;
+	private ArrayList<Post> postList;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.subject_2_program);
+		postList= new ArrayList<Post>();
 		appData = (AppData) getApplication();
 		rl = (RelativeLayout) findViewById(R.id.loading);
 		logininfo = appData.getLoginInfo();
@@ -60,13 +65,8 @@ public class AllProgramActivity extends BaseActivity {
 					int position, long id) {
 				Intent intent = new Intent(getApplicationContext(),
 						NewFileActivity.class);
-				Program movie = mData.get(position);
-				Post2 home = new Post2();
-				Topic t = new Topic();
-				t.setProgramid(movie.getId());
-				t.setProgram(movie);
-				home.setTopic(t);
-				intent.putExtra("saydetial", home);
+				Post post = postList.get(position);
+				intent.putExtra("saydetial", post);
 				startActivity(intent);
 			}
 
@@ -135,7 +135,7 @@ public class AllProgramActivity extends BaseActivity {
 			protected void onPostExecute(List result) {
 				hideProgress(rl);
 				super.onPostExecute(result);
-				adapter = new MyAdapter(getApplicationContext(), result);
+				adapter = new MyAdapter(getApplicationContext());
 				listview.setAdapter(adapter);
 				// adapter.notifyDataSetChanged();
 			}
@@ -144,21 +144,26 @@ public class AllProgramActivity extends BaseActivity {
 			protected List doInBackground(Void... params) {
 				JsonUtil jsut = new JsonUtil();
 				try {
-
 					String path = "http://tvsrv.webhop.net:8080/api/programs?page="
 							+ page2 + "&count=" + count2 + "";
-					mData = jsut.getMovie(path);
-					for (int i = 0; i < mData.size(); i++) {
-						Program p = mData.get(i);
-						if ((p.getId()) == 0) {
-							mData.remove(i);
-						}
+					JSONArray jsPostArray = jsut.getSource(path);
+					System.out.println("jsPostArray"+jsPostArray);
+					for (int i = 0; i < jsPostArray.length(); i++) {
+					JSONObject	jsPost =jsPostArray.getJSONObject(i);
+					JSONObject2Program jp = new JSONObject2Program();
+					Program pg =jp.getProgram(jsPost);
+					Post post = new Post();
+					Topic tp = new Topic();
+					tp.setProgram(pg);
+					post.setTopic(tp);
+					postList.add(post);
 					}
+					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				return mData;
+				return postList;
 			}
 
 		}.execute();
@@ -174,16 +179,16 @@ public class AllProgramActivity extends BaseActivity {
 	class MyAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;
-		private List<Program> mData;
+		
 
-		public MyAdapter(Context context, List result) {
+		public MyAdapter(Context context) {
 			this.mInflater = LayoutInflater.from(context);
-			this.mData = result;
+			
 		}
 
 		@Override
 		public int getCount() {
-			return mData.size();
+			return postList.size();
 		}
 
 		public Object getItem(int arg0) {
@@ -212,32 +217,26 @@ public class AllProgramActivity extends BaseActivity {
 			ImageFileCache cache = ImageFileCache.getCashInstance();
 			ImageDownloder imageDownloder = new ImageDownloder();
 			Bitmap bitmap = null;
-			String FileImagePath = mData.get(position).getImagePath();
+			String FileImagePath = postList.get(position).getTopic().getProgram().getImagePath();
 			Bitmap FileImage = cache.getImage(FileImagePath);
-			if (FileImage != null) {
-
-				holder.img.setImageBitmap(FileImage);
-			}
-			try {
-				bitmap = imageDownloder.imageDownloder(FileImagePath);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (bitmap != null) {
+			if (FileImage == null) {
+                try {
+					bitmap = imageDownloder.imageDownloder(FileImagePath);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				holder.img.setImageBitmap(bitmap);
 				cache.saveBmpToSd(bitmap, FileImagePath);
-			} else {
-				holder.img.setImageResource(R.drawable.icon);
 			}
-
+			holder.img.setImageBitmap(FileImage);
 			holder.title.setText(getApplication().getResources().getString(
 					R.string.see_filename)
-					+ ":" + (String) mData.get(position).getTitle());
+					+ ":" + postList.get(position).getTopic().getProgram().getTitle());
 			holder.actor.setText(getApplication().getResources().getString(
 					R.string.see_actor)
-					+ ":" + (String) mData.get(position).getActor());
-			holder.keyword.setText(mData.get(position).getKey());
+					+ ":" + postList.get(position).getTopic().getProgram().getActor());
+			holder.keyword.setText(postList.get(position).getTopic().getProgram().getKey());
 			return convertView;
 		}
 	}

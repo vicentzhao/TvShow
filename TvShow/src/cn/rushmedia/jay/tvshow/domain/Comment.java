@@ -2,13 +2,13 @@ package cn.rushmedia.jay.tvshow.domain;
 
 public class Comment {
 	
-	 private Post2 homeLineDiscu;
+	 private Post homeLineDiscu;
 
-	public Post2 getHomeLineDiscu() {
+	public Post getHomeLineDiscu() {
 		return homeLineDiscu;
 	}
 
-	public void setHomeLineDiscu(Post2 homeLineDiscu) {
+	public void setHomeLineDiscu(Post homeLineDiscu) {
 		this.homeLineDiscu = homeLineDiscu;
 	}
 

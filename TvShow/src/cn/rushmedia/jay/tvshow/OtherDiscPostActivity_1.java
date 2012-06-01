@@ -37,7 +37,7 @@ import android.widget.LinearLayout.LayoutParams;
 import cn.rushmedia.jay.tvshow.OtherUsersPostActivity.MyAdapter;
 import cn.rushmedia.jay.tvshow.OtherUsersPostActivity.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -62,7 +62,7 @@ public class OtherDiscPostActivity_1 extends BaseActivity {
 	private String filmName;
 	private String c;
 	private String rtitle;
-    private List<Post2> myHomeLineDiscList;
+    private List<Post> myHomeLineDiscList;
     private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash  cash;
@@ -109,7 +109,7 @@ public class OtherDiscPostActivity_1 extends BaseActivity {
 					System.out.println("==========>>>>>>我已被执行");
 					Intent intent = new Intent(getApplicationContext(),PostsDetialActivity.class);
 					Log.i("system", "触发点击事件");
-					Post2 myHomeLineDiscu =myHomeLineDiscList.get(position);
+					Post myHomeLineDiscu =myHomeLineDiscList.get(position);
 					intent.putExtra("saydetial",myHomeLineDiscu);
 					startActivity(intent);
 					
@@ -177,7 +177,7 @@ public class OtherDiscPostActivity_1 extends BaseActivity {
 		 * @param count  每页显示的个数
 		 */
 	private void intiData(final int page,final int count) {
-		myHomeLineDiscList =new ArrayList<Post2>();
+		myHomeLineDiscList =new ArrayList<Post>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>(){
 			protected void onPreExecute() {
@@ -256,15 +256,15 @@ public class OtherDiscPostActivity_1 extends BaseActivity {
 						   topic.setTopic_name(rtitle);
 						   topic.setProgramid(programid);
 						   topic.setProgram(program);
-						   Post2 myHomeLineDisc = new Post2();
-						   Post2 repostmyHomeLineDiscu =  new Post2();
+						   Post myHomeLineDisc = new Post();
+						   Post repostmyHomeLineDiscu =  new Post();
 						   long datelong = js.getLong("ct");
 						   myHomeLineDisc.setU(u);
 						   myHomeLineDisc.setT(t);
 						   myHomeLineDisc.setP(p);
 						   myHomeLineDisc.setC(c);
 						   myHomeLineDisc.setTopic(topic);
-						   myHomeLineDisc.setCreated_at(datelong);
+						   myHomeLineDisc.setCt(datelong);
 						   myHomeLineDisc.setUser(user);
 						   myHomeLineDisc.setTopic(topic);
 						   myHomeLineDiscList.add(myHomeLineDisc);
@@ -525,7 +525,7 @@ public class OtherDiscPostActivity_1 extends BaseActivity {
 				holder.tv_homeline_comment.setText(myHomeLineDiscList.get(position).getC());
 				holder.tv_homeline_filmname.setText(myHomeLineDiscList.get(position).getTopic().getProgram().getTitle());
 				holder.tv_homeline_title.setText(myHomeLineDiscList.get(position).getTopic().getTopic_name());
-				long create_time=myHomeLineDiscList.get(position).getCreated_at();
+				long create_time=myHomeLineDiscList.get(position).getCt();
 				TimeDifference timeDifference = new TimeDifference();
 				try {
 					String timeDiffence = timeDifference.getTimeDiffence(create_time);

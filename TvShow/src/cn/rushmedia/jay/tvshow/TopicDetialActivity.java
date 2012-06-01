@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 
@@ -40,7 +40,7 @@ public class TopicDetialActivity extends BaseActivity {
 	private Button tv_sametopic_disctopic;
 	private Button tv_sametopic_topicpost;
 	private Button tv_sametopic_ctopic;
-	private Post2 home;
+	private Post home;
 	private HttpResponse response;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class TopicDetialActivity extends BaseActivity {
 		AppData ap =(AppData) getApplication();
 		ap.addActivity(this);
 	    Intent i = getIntent();
-	   home = (Post2) i.getSerializableExtra("topic");
+	   home = (Post) i.getSerializableExtra("topic");
 	    final Topic topic = home.getTopic();
 	    back_button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -86,11 +86,9 @@ public class TopicDetialActivity extends BaseActivity {
 	    tv_topicdetia_reviewprogram.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				Intent sameTopicIntent = new Intent(TopicDetialActivity.this,ProgramReviewListActivity_2.class);
+				Intent sameTopicIntent = new Intent(TopicDetialActivity.this,MyTopicActivity.class);
 				sameTopicIntent.putExtra("saydetial",home);
 				startActivity(sameTopicIntent);
-								
 			}
 		});
 	    /**
@@ -99,7 +97,7 @@ public class TopicDetialActivity extends BaseActivity {
 	    	tv_topicdetial_programdetail.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Post2 homeLineDiscu  = new Post2();
+				Post homeLineDiscu  = new Post();
 				homeLineDiscu.setTopic(topic);
 				Intent MyReviewIntent = new Intent(TopicDetialActivity.this,NewFile_topic_Activity.class);
 				MyReviewIntent.putExtra("saydetial",homeLineDiscu);

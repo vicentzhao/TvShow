@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,9 +33,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
+import cn.rushmedia.jay.tvshow.util.JSONObject2Program;
+import cn.rushmedia.jay.tvshow.util.JsonUtil;
 
 public class NewFileActivity extends BaseActivity {
 	public ImageView img;
@@ -50,12 +53,13 @@ public class NewFileActivity extends BaseActivity {
 	private Program movie;
 	private int programid;
 	private int userid;
-	private HttpResponse response;
+	
 	private RelativeLayout rl;
     private Button btn_movie_new_about;
-    private Post2 homeLineDiscu;
+    private Post post;
     private Button btn_movie_exit;
     private Button movie_more;
+    private boolean collected =false;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -64,7 +68,8 @@ public class NewFileActivity extends BaseActivity {
 		 AppData appl = (AppData)getApplication();
 		 rl=(RelativeLayout) findViewById(R.id.loading);
 		 Intent it =getIntent();
-	      homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
+	     post = (Post) it.getSerializableExtra("saydetial");
+	     int collectedProgramId = post.getTopic().getProgramid(); 
 		 try {
 			   String loginInfo = appl.getLoginInfo();
 			   if(loginInfo==null){
@@ -73,8 +78,25 @@ public class NewFileActivity extends BaseActivity {
 			   }
 				JSONObject  loginuserjs = new JSONObject(loginInfo);
 				userid=loginuserjs.getInt("id");
+				String path ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/favorite-programs";
+				JsonUtil jsut = new JsonUtil();
+				try {
+					JSONArray source = jsut.getSource(path);
+					for (int i = 0; i < source.length(); i++) {
+						JSONObject jsProgram =source.getJSONObject(i);
+						JSONObject2Program jp = new JSONObject2Program();
+						Program program = jp.getProgram(jsProgram);
+						int favId = program.getId();
+						if(collectedProgramId==favId){
+							collected=true;
+						}
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
        initdata();
@@ -87,8 +109,8 @@ public class NewFileActivity extends BaseActivity {
 				startActivity(i);
 			}
 		});
-	    movie = homeLineDiscu.getTopic().getProgram();
-	    programid =homeLineDiscu.getTopic().getProgramid();
+	    movie = post.getTopic().getProgram();
+	    programid =post.getTopic().getProgramid();
 	    title.setText(movie.getTitle());
 	   // actor.setText(movie.getActor());
 	    keyword.setText(movie.getKey());
@@ -107,27 +129,27 @@ public class NewFileActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				 String json="{\"id\":\""+programid+"\"}";
-					String url="http://tvsrv.webhop.net:8080/api/users/"+userid+"/favorite-programs";
-					DefaultHttpClient httpClient = new DefaultHttpClient();
-					HttpPost request = new HttpPost(url);
-					// 绑定到请求 Entry 
-							// 发送请求 
-							try {
-								StringEntity entity = new StringEntity(json,"utf-8");
-								request.setEntity(entity); 
-								request.setHeader("Content-Type", "application/json");
-								response = httpClient.execute(request); 
-								String result = EntityUtils.toString(response.getEntity());
-								System.out.println(result+"============>>");
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+				if(collected){
+					String unPath ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/unfavorite-programs";
+					int code = collectProgram(unPath);
+					if(code==HttpStatus.SC_OK){
+						Toast.makeText(getApplicationContext(), "取消收藏成功", 1).show();
+						tv_programedetail_btncoll.setText("收藏");
+						collected=false;
+					}else{
+						Toast.makeText(getApplicationContext(), "取消收藏失败，请重试", 1).show();
+					}
+				}else{
+				 String collectPath="http://tvsrv.webhop.net:8080/api/users/"+userid+"/favorite-programs";
+                     int collectcode = collectProgram(collectPath);
+							if (collectcode == HttpStatus.SC_OK){
+								Toast.makeText(getApplicationContext(), "收藏成功", 1).show();
+								tv_programedetail_btncoll.setText("取消收藏");
+								collected=true;
+							}else{
+								Toast.makeText(getApplicationContext(), "收藏失败，请重试", 1).show();
 							}
-							if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-								Toast.makeText(getApplicationContext(), "提交成功", 1).show();
-								tv_programedetail_btncoll.setText("已收藏");
-							}
+			}
 			}
 		});
 	    /**
@@ -138,7 +160,7 @@ public class NewFileActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				  Intent sameTopicIntent = new Intent(NewFileActivity.this,SameTopicListActivity.class);
-				  sameTopicIntent.putExtra("saydetial",homeLineDiscu);
+				  sameTopicIntent.putExtra("saydetial",post);
 				    startActivity(sameTopicIntent);
 			}
 		});
@@ -160,24 +182,14 @@ public class NewFileActivity extends BaseActivity {
 	    movie_more.setOnClickListener(new OnClickListener() {
 	    	@Override
 	    	public void onClick(View v) {
-	    		Intent sameTopicIntent = new Intent(NewFileActivity.this,ProgramReviewListActivity_1.class);
-				sameTopicIntent.putExtra("saydetial", homeLineDiscu);
+	    		Intent sameTopicIntent = new Intent(NewFileActivity.this,MyPostActivity.class);
+				sameTopicIntent.putExtra("saydetial", post);
 				startActivity(sameTopicIntent);
 				
 	    	}
 	    });
 	    
 	}
-//	/**
-//	 * 捕捉回退键
-//	 */
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-//			showTips();
-//		return false;
-//		}
-//		return false;
-//		}
 
 	  void initdata(){
 			 img=(ImageView) findViewById(R.id.movie_img);
@@ -186,8 +198,36 @@ public class NewFileActivity extends BaseActivity {
 			 keyword =(TextView) findViewById(R.id.movie_key);
 			 desc =(TextView) findViewById(R.id.movie_desc);
 			 tv_programedetail_btncoll=(Button) findViewById(R.id.tv_programedetail_btncoll);
+			 if(collected){
+				 tv_programedetail_btncoll.setText("取消收藏");
+				 System.out.println("取消收藏"+collected);
+			 }else{
+				 tv_programedetail_btncoll.setText("收藏");
+				 System.out.println("收藏"+collected);
+			 }
 			 btn_movie_new_about =(Button)findViewById(R.id.btn_movie_new_about);
 			 btn_movie_exit =(Button)findViewById(R.id.btn_movie_exit);
 			 movie_more =(Button)findViewById(R.id.movie_more);
 		 }
+	  public int collectProgram(String url){
+		  HttpResponse response;
+		  try {
+			    String json="{\"id\":\""+programid+"\"}";
+				DefaultHttpClient httpClient = new DefaultHttpClient();
+				HttpPost request = new HttpPost(url);
+				StringEntity entity = new StringEntity(json,"utf-8");
+				request.setEntity(entity); 
+				request.setHeader("Content-Type", "application/json");
+				response = httpClient.execute(request); 
+				String result = EntityUtils.toString(response.getEntity());
+				System.out.println(result+"============>>");
+				int statusCode = response.getStatusLine().getStatusCode();
+				
+				return statusCode;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return 0;
+			}
+	  }
 }

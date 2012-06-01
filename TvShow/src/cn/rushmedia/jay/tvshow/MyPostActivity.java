@@ -37,8 +37,6 @@ import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
-import cn.rushmedia.jay.tvshow.domain.Topic;
-import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageCash;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 import cn.rushmedia.jay.tvshow.util.ImageFileCache;
@@ -71,16 +69,8 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	private Button tv_mytopic_nextpage;
 	private String desc;
 	private ImageFileCache cache;
-	/** * 设置布局显示属性 */
-	private LayoutParams mLayoutParams = new LinearLayout.LayoutParams(
-			LinearLayout.LayoutParams.WRAP_CONTENT,
-			LinearLayout.LayoutParams.WRAP_CONTENT);
-	/** * 设置布局显示目标最大化属性 */
-	private LayoutParams FFlayoutParams = new LinearLayout.LayoutParams(
-			LinearLayout.LayoutParams.FILL_PARENT,
-			LinearLayout.LayoutParams.FILL_PARENT);
-	// private ProgressBar progressBar;
-	RelativeLayout rl;
+	private RelativeLayout rl;
+	private String path;
 	int page = 1;
 	int count = 10;
 	private ProgressBar progressBar;
@@ -89,12 +79,31 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.subjectbeifen);
+		setContentView(R.layout.subject);
 		repostList = new ArrayList<Repost>();
 		initView();
+		Intent it =getIntent();
+		Post post =(Post)it.getSerializableExtra("saydetial");
+		if(post!=null){
+		 int programid =post.getTopic().getProgramid();
+	       path ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page="+page+"&count="+count+"";
+		}else{
+			try {
+				appData = (AppData) getApplication();
+				logininfo = appData.getLoginInfo();
+				JSONObject jsUserInfo = new JSONObject(logininfo);
+				userid = jsUserInfo.getInt("id");
+               path = "http://tvsrv.webhop.net:8080/api/users/"
+					+ userid + "/homeline?page=" + page + "&count="
+					+ count + "";
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		tv_mytopic_previewpage.setOnClickListener(this);
 		tv_mytopic_nextpage.setOnClickListener(this);
-		intiData(page, count);
+		intiData(page, count,path);
 		/**
 		 * 设置监听事件，监听listview的改变
 		 */
@@ -112,29 +121,14 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 		});
 	}
 
-	boolean isExit=false;
-	Handler mHandler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			isExit=false;
-		}
-	};
+
 	/**
 	 * 捕捉回退键
 	 */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
          if(keyCode == KeyEvent.KEYCODE_BACK){
-              if(!isExit){
-                   isExit=true;
-                   Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                   mHandler.sendEmptyMessageDelayed(0, 2000);
-              }
-              else{
-                   finish();
-                   System.exit(0);
-              }
+        	 showTips();
          }
          return false;
     }
@@ -147,7 +141,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	 * @param count
 	 *            每页显示的个数
 	 */
-	private void intiData(final int page, final int count) {
+	private void intiData(final int page, final int count,final String initPath) {
 		postList = new ArrayList<Post>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>() {
@@ -179,15 +173,9 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			@Override
 			protected JSONArray doInBackground(Void... params) {
 				try {
-					appData = (AppData) getApplication();
-					logininfo = appData.getLoginInfo();
-					JSONObject jsPost = new JSONObject(logininfo);
-					userid = jsPost.getInt("id");
-					String path = "http://tvsrv.webhop.net:8080/api/users/"
-							+ userid + "/homeline?page=" + page + "&count="
-							+ count + "";
+					JSONObject jsPost ;
 					JsonUtil jsut = new JsonUtil();
-					array = jsut.getSource(path);
+					array = jsut.getSource(initPath);
 					if (array != null) {
 						for (int i = 0; i < array.length(); i++) {
 							jsPost = array.getJSONObject(i);
@@ -533,7 +521,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	private void loadmoreItem() {
 		page = page + 1;
 		count = 10;
-		intiData(page, count);
+		intiData(page, count,path);
 	}
 	private void loadlessItem() {
 
@@ -544,7 +532,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			mSubjectFooter.setVisibility(View.VISIBLE);
 			Toast.makeText(this, "已经到达首页", Toast.LENGTH_SHORT).show();
 		} else {
-			intiData(page, count);
+			intiData(page, count,path);
 		}
 	}
 	@Override

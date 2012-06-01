@@ -5,9 +5,9 @@
 	<LinearLayout android:gravity="center_vertical"
 		android:orientation="horizontal" android:id="@+id/title_bar"
 		android:background="@drawable/title_bg_night" android:layout_width="fill_parent"
-		android:layout_height="35.0dip">
+		android:layout_height="55.0dip">
 		<ImageButton android:layout_width="40dip"  android:id="@+id/backtohome"
-			android:src="@drawable/back_home_selector" android:layout_gravity="left" android:layout_height="match_parent" android:layout_marginLeft="2dip"/>
+			android:src="@drawable/back_home_selector" android:layout_gravity="left" android:layout_height="45dip" android:layout_marginLeft="2dip"/>
 		<LinearLayout android:gravity="center_vertical"
 			android:layout_width="0.0dip" android:layout_height="wrap_content"
 			android:layout_marginLeft="50dip"
@@ -24,37 +24,49 @@
 	</LinearLayout>
 	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/subject_view" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:scrollbars="none"
+		android:layout_height="fill_parent" android:scrollbars="none"
 		android:layout_weight="1.0" android:padding="10dip"
-		android:background="#FFF5F5F5">
-		<RelativeLayout android:layout_width="fill_parent"
-			android:paddingTop="5dip" android:layout_height="fill_parent"
-			android:background="@drawable/content_bg" android:id="@+id/section1">
+		android:background="#ffe0ecf9">
+
+		<RelativeLayout
+		    android:id="@+id/section1"
+		    android:layout_width="fill_parent"
+		    android:layout_height="match_parent"
+		    android:background="@drawable/content_bg" >
+
 			<TextView android:id="@+id/txtInfo" android:layout_width="fill_parent"
-				android:text="电影详情" android:layout_height="wrap_content" />
+			    android:textSize="20dip"
+			    android:textColor="@color/orange"
+			    android:gravity="center"
+			    android:layout_centerHorizontal="true"
+				android:text="电影详情" android:layout_height="30dip" />
 
 			<RelativeLayout android:layout_width="wrap_content"
 				android:paddingTop="10dip" android:layout_below="@id/txtInfo"
-				android:layout_height="wrap_content" android:id="@+id/wrapper">
+				android:layout_height="fill_parent" android:id="@+id/wrapper">
 
 				<LinearLayout android:orientation="horizontal"
 					android:id="@+id/wrapper" android:layout_height="fill_parent"
 					android:layout_width="fill_parent">
 					<ImageView android:id="@+id/movie_img"
-						android:layout_width="100dip" android:layout_height="140dip" />
+						android:layout_width="180dip" android:layout_height="140dip" />
 
 					<LinearLayout android:orientation="vertical"
 						android:paddingLeft="15dip" android:layout_height="wrap_content"
 						android:layout_width="fill_parent">
 
 						<TextView android:id="@+id/movie_title"
-							android:layout_width="fill_parent" android:textColor="@color/black"
-							android:textSize="25dp" android:paddingTop="5dip"
-							android:textStyle="bold" android:layout_height="wrap_content" />
+							android:layout_width="fill_parent" 
+							android:textSize="32dp" android:paddingTop="5dip"
+							android:paddingLeft="10dip"
+							android:textColor="@color/blue_add"
+							android:text="hello"
+							android:textStyle="bold" 
+							android:layout_height="wrap_content" />
 
 						<TextView android:id="@+id/movie_key"
 							android:paddingTop="10dip" android:layout_width="fill_parent"
-							android:textColor="@color/black" android:textSize="15dp"
+							android:textColor="@color/black" android:textSize="25dp"
 							android:layout_height="wrap_content" />
 					   <TextView android:id="@+id/movie_actor"
 								android:layout_width="wrap_content" android:textColor="#00f"
@@ -69,7 +81,7 @@
 
 				<Button android:text="点击收藏" android:id="@+id/tv_programedetail_btncoll"
 					android:layout_marginTop="5dip" 
-					android:layout_below="@id/wrapper" android:textSize="18dp"
+					android:layout_below="@id/wrapper" android:textSize="22dip"
 					android:layout_centerHorizontal="true" android:background="@drawable/wp_button"
 					android:width="150dip" android:layout_width="wrap_content"
 					android:layout_height="wrap_content"></Button>
@@ -77,7 +89,7 @@
 				<TextView android:id="@+id/movie_desc"
 					android:paddingTop="10dip" android:layout_below="@id/tv_programedetail_btncoll"
 					android:layout_width="fill_parent" android:textColor="@color/black"
-					android:textSize="18dp" android:paddingBottom="10dip"
+					android:textSize="28dp" android:paddingBottom="10dip"
 					android:layout_height="fill_parent" />
 
 			</RelativeLayout>
@@ -91,13 +103,16 @@
 		android:layout_alignParentBottom="true">
 		<Button android:id="@+id/btn_movie_new_about" android:text="相关话题"
 			android:layout_width="0dip" android:layout_height="wrap_content"
+			android:textSize="28dip"
 			android:layout_weight="1" />
 		
 		<Button android:id="@+id/movie_more" android:text="更多评论"
+		    android:textSize="28dip"
 			android:layout_width="0dip" android:layout_height="wrap_content"
 			android:layout_weight="1" />
 		<Button android:id="@+id/btn_movie_exit" android:text="返回主页"
 			android:layout_width="0dip" android:layout_height="wrap_content"
+			android:textSize="28dip"
 			android:layout_weight="1" />
 	</LinearLayout>	
 	

@@ -1,6 +1,5 @@
 package cn.rushmedia.jay.tvshow;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,30 +14,27 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout.LayoutParams;
-import cn.rushmedia.jay.tvshow.ProgramReviewListActivity_1.MyAdapter;
-import cn.rushmedia.jay.tvshow.ProgramReviewListActivity_1.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -63,7 +59,7 @@ public class DiscPostActivity extends BaseActivity {
 	private String filmName;
 	private String c;
 	private String rtitle;
-    private List<Post2> myHomeLineDiscList;
+    private List<Post> myHomeLineDiscList;
     private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash  cash;
@@ -86,7 +82,7 @@ public class DiscPostActivity extends BaseActivity {
 	private Button tv_mytopic_previewpage;
 	private Button tv_mytopic_nextpage;
 	private int programid;
-	private Post2 homeLineDiscu;
+	private Post homeLineDiscu;
 	RelativeLayout rl;
 	int page = 1;
 	int count = 8;
@@ -184,7 +180,7 @@ public class DiscPostActivity extends BaseActivity {
 					System.out.println("==========>>>>>>我已被执行");
 					Intent intent = new Intent(DiscPostActivity.this,PostsDetialActivity_1.class);
 					Log.i("system", "触发点击事件");
-					Post2 myHomeLineDiscu =myHomeLineDiscList.get(position);
+					Post myHomeLineDiscu =myHomeLineDiscList.get(position);
 					intent.putExtra("saydetial",myHomeLineDiscu);
 					startActivity(intent);
 				}
@@ -208,7 +204,7 @@ public class DiscPostActivity extends BaseActivity {
 		 */
 	private void intiData(final int page,final int count) {
 		
-		myHomeLineDiscList =new ArrayList<Post2>();
+		myHomeLineDiscList =new ArrayList<Post>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>(){
 			protected void onPreExecute() {
@@ -240,7 +236,7 @@ public class DiscPostActivity extends BaseActivity {
 				try {
 	                  
 					Intent it =getIntent();
-				   homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
+				   homeLineDiscu = (Post) it.getSerializableExtra("saydetial");
 					//	String path ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/homeline";
 				   int p2 = homeLineDiscu.getP();
 						String path ="http://tvsrv.webhop.net:8080/api/posts/"+p2+"/comments?page="+page+"&count="+count+"";
@@ -284,15 +280,15 @@ public class DiscPostActivity extends BaseActivity {
 						   topic.setTopic_name(rtitle);
 						   topic.setProgramid(programid);
 						   topic.setProgram(program);
-						   Post2 myHomeLineDisc = new Post2();
-						   Post2 repostmyHomeLineDiscu =  new Post2();
+						   Post myHomeLineDisc = new Post();
+						   Post repostmyHomeLineDiscu =  new Post();
 						   long datelong = js.getLong("ct");
 						   myHomeLineDisc.setU(u);
 						   myHomeLineDisc.setT(t);
 						   myHomeLineDisc.setP(p);
 						   myHomeLineDisc.setC(c);
 						   myHomeLineDisc.setTopic(topic);
-						   myHomeLineDisc.setCreated_at(datelong);
+						   myHomeLineDisc.setCt(datelong);
 						   myHomeLineDisc.setUser(user);
 						   myHomeLineDisc.setTopic(topic);
 						   myHomeLineDiscList.add(myHomeLineDisc);
@@ -578,7 +574,7 @@ public class DiscPostActivity extends BaseActivity {
 				holder.tv_homeline_comment.setText(myHomeLineDiscList.get(position).getC());
 				holder.tv_homeline_filmname.setText(myHomeLineDiscList.get(position).getTopic().getProgram().getTitle());
 				holder.tv_homeline_title.setText(myHomeLineDiscList.get(position).getTopic().getTopic_name());
-				long create_time=myHomeLineDiscList.get(position).getCreated_at();
+				long create_time=myHomeLineDiscList.get(position).getCt();
 				TimeDifference timeDifference = new TimeDifference();
 				try {
 					String timeDiffence = timeDifference.getTimeDiffence(create_time);

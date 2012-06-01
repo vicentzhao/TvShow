@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class Repost implements Serializable{
     
-	private Post2 discu;
-   	public Post2 getDiscu() {
+	private Post discu;
+   	public Post getDiscu() {
 		return discu;
 	}
-	public void setDiscu(Post2 discu) {
+	public void setDiscu(Post discu) {
 		this.discu = discu;
 	}
 }

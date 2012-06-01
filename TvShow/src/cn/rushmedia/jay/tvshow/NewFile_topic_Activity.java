@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 
@@ -43,7 +43,7 @@ public class NewFile_topic_Activity extends BaseActivity {
 	private HttpResponse response;
 	private RelativeLayout rl;
     private Button btn_movie_new_about;
-    private Post2 homeLineDiscu;
+    private Post homeLineDiscu;
     private Button btn_movie_exit;
     private Button movie_more;
     private ImageButton back_button;
@@ -56,7 +56,7 @@ public class NewFile_topic_Activity extends BaseActivity {
 		 appl.addActivity(this);
 		 rl=(RelativeLayout) findViewById(R.id.loading);
 		 Intent it =getIntent();
-	      homeLineDiscu = (Post2) it.getSerializableExtra("saydetial");
+	      homeLineDiscu = (Post) it.getSerializableExtra("saydetial");
 		 try {
 			   String loginInfo = appl.getLoginInfo();
 				JSONObject  loginuserjs = new JSONObject(loginInfo);
@@ -140,10 +140,11 @@ public class NewFile_topic_Activity extends BaseActivity {
 	    		finish();
 	    	}
 	    });
+	    //TODO
 	    movie_more.setOnClickListener(new OnClickListener() {
 	    	@Override
 	    	public void onClick(View v) {
-	    		Intent sameTopicIntent = new Intent(NewFile_topic_Activity.this,ProgramReviewListActivity_1.class);
+	    		Intent sameTopicIntent = new Intent(NewFile_topic_Activity.this,MyPostActivity.class);
 				sameTopicIntent.putExtra("programid", programid);
 				startActivity(sameTopicIntent);
 	    	}

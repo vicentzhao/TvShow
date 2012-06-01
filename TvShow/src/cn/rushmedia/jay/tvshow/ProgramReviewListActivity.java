@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
 import cn.rushmedia.jay.tvshow.domain.Topic;
@@ -52,7 +52,7 @@ public class ProgramReviewListActivity extends BaseActivity{
 	private String filmName;
 	private String c;
 	private String rtitle;
-    private List<Post2> myHomeLineDiscList;
+    private List<Post> myHomeLineDiscList;
     private LinearLayout captchaLayout;
 	private HashMap<String, Bitmap> mHardBitmapCache;
 	private ImageCash  cash;
@@ -69,7 +69,7 @@ public class ProgramReviewListActivity extends BaseActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.subject);
-		myHomeLineDiscList =new ArrayList<Post2>();
+		myHomeLineDiscList =new ArrayList<Post>();
 		appData =(AppData) getApplication();
 		appData.addActivity(this);
 	    Intent it =getIntent();
@@ -126,12 +126,12 @@ private void intiData(JSONArray jsonArray) {
 			   topic.setTopic_name(rtitle);
 			   topic.setProgram(program);
 			   topic.setProgramid(programid);
-			   Post2 myHomeLineDisc = new Post2();
-			   Post2 repostmyHomeLineDiscu =  new Post2();
+			   Post myHomeLineDisc = new Post();
+			   Post repostmyHomeLineDiscu =  new Post();
 			   long datelong = js.getLong("ct");
 			   myHomeLineDisc.setC(c);
 			   myHomeLineDisc.setTopic(topic);
-			   myHomeLineDisc.setCreated_at(datelong);
+			   myHomeLineDisc.setCt(datelong);
 			   myHomeLineDisc.setUser(user);
 			   myHomeLineDisc.setTopic(topic);
 			   myHomeLineDiscList.add(myHomeLineDisc);
@@ -146,7 +146,7 @@ protected void onListItemClick(ListView l, View v, int position, long id) {
 	Intent intent = new Intent(ProgramReviewListActivity.this,ProgramReviewDetailActivity.class);
 	//AppData.getInstance().setMoviesEntity(mData);
 	//Program movie = mData.get(position);
-	Post2 myHomeLineDiscu =myHomeLineDiscList.get(position);
+	Post myHomeLineDiscu =myHomeLineDiscList.get(position);
 	intent.putExtra("sametopicdetail",myHomeLineDiscu);
 	startActivity(intent);
 }
@@ -412,7 +412,7 @@ public final class ViewHolder{
 			holder.tv_homeline_comment.setText(myHomeLineDiscList.get(position).getC());
 			holder.tv_homeline_filmname.setText(myHomeLineDiscList.get(position).getTopic().getProgram().getTitle());
 			holder.tv_homeline_title.setText(myHomeLineDiscList.get(position).getTopic().getTopic_name());
-			long create_time=myHomeLineDiscList.get(position).getCreated_at();
+			long create_time=myHomeLineDiscList.get(position).getCt();
 			TimeDifference timeDifference = new TimeDifference();
 			try {
 				String timeDiffence = timeDifference.getTimeDiffence(create_time);

@@ -27,7 +27,7 @@ import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.TopicListActivity.MyAdapter;
 import cn.rushmedia.jay.tvshow.TopicListActivity.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
@@ -86,7 +86,7 @@ public class TopicListActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				 Intent i = new Intent(getApplicationContext(),TopicDetialActivity.class);
-				 Post2 home = new Post2();
+				 Post home = new Post();
 				 Topic topic =topicArraylist.get(position);
 				 home.setTopic(topic);
 				 i.putExtra("topic", home);

@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
-import cn.rushmedia.jay.tvshow.domain.Post2;
+import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
@@ -63,7 +63,7 @@ public class MyFavProgramActivity extends BaseActivity {
 			long id) {
 		Intent intent = new Intent(getApplicationContext(),NewFileActivity.class);
 		Program movie = mData.get(position);
-		Post2 home = new Post2();
+		Post home = new Post();
 		Topic t = new Topic();
 		t.setProgramid(movie.getId());
 		t.setProgram(movie);

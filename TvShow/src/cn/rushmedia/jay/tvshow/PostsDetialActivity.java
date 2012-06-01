@@ -74,7 +74,7 @@ public class PostsDetialActivity extends BaseActivity {
 			public void onClick(View v) {
 				 ProgressDialog pd = new ProgressDialog(PostsDetialActivity.this) ;
 				pd.show();
-			Intent sameTopicIntent = new Intent(PostsDetialActivity.this,ProgramReviewListActivity_1.class);
+			Intent sameTopicIntent = new Intent(PostsDetialActivity.this,MyPostActivity.class);
 			sameTopicIntent.putExtra("saydetial",post);
 			startActivity(sameTopicIntent);
 			pd.dismiss();
@@ -126,50 +126,6 @@ public class PostsDetialActivity extends BaseActivity {
 			}
 		});
 		/**
-		 * 当前发言评论列表
-		 */
-//		tv_sametopic_backtohome.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				
-//				//http://tvsrv.webhop.net:8080/api/posts/1/comments
-//				final ProgressDialog pd = new ProgressDialog(PostsDetialActivity.this) ;
-//				pd.setMessage("正在登陆");
-//				pd.show();
-//				new AsyncTask<Void, Void, String>(){
-//
-//					@Override
-//					protected void onPostExecute(String result) {
-//						pd.dismiss();
-//						if(result!=null){
-//							Intent i = new Intent(PostsDetialActivity.this,DiscPostActivity.class);
-//							i.putExtra("data", result);
-//							startActivity(i);
-//						}else{
-//							return;
-//						}
-//						super.onPostExecute(result);
-//					}
-//
-//					@Override
-//					protected String doInBackground(Void... params) {
-//						try {
-//							JsonUtil js = new JsonUtil();
-//							String path ="http://tvsrv.webhop.net:8080/api/posts/"+p+"/comments";
-//							String source = js.getStringSource(path);
-//							return source;
-//						} catch (Exception e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//							return null;
-//						}
-//					}
-//					
-//				}.execute();
-//			}
-//		});
-		/**
 		 * 评论相关帖子
 		 */
 		tv_sametopic_idicupost.setOnClickListener(new OnClickListener() {
@@ -182,17 +138,6 @@ public class PostsDetialActivity extends BaseActivity {
 			}
 		});
   }
-//	/**
-//	 * 捕捉回退键
-//	 */
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-//			showTips();
-//		return false;
-//		}
-//		return false;
-//		}
-
 	private void initData() {
 		backtohome=(ImageButton)findViewById(R.id.backtohome);
 		tv_tvshow_topicdetial_title=(TextView) findViewById(R.id.tv_tvshow_topicdetial_title);

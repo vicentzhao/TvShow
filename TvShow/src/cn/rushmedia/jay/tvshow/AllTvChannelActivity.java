@@ -63,7 +63,6 @@ public class AllTvChannelActivity extends Activity {
 			}
 		}
 	    gdView.setOnItemClickListener(new OnItemClickListener() {
-			
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -81,12 +80,10 @@ public class AllTvChannelActivity extends Activity {
 		}
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 		@Override
