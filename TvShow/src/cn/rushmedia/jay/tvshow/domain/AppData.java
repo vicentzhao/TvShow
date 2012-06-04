@@ -12,7 +12,7 @@ import android.app.Application;
 import android.graphics.Bitmap;
 
 public class AppData extends Application {
-	 private static AppData instance;  
+	 public  static AppData instance;  
 	 //单例模式中获取唯一的MyApplication实例 
      public static AppData getInstance() {  
          if(null == instance) 
@@ -93,7 +93,7 @@ public class AppData extends Application {
 			}
 
 
-	private String loginInfo;
+	public  String loginInfo;
 	public String getLoginInfo() {
 		return loginInfo;
 	}

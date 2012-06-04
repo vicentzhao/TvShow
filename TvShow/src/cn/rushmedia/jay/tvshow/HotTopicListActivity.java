@@ -24,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,6 +50,9 @@ public class HotTopicListActivity extends BaseActivity {
 	public TextView tv_sametopiclist_movie_actor;
 	public TextView tv_sametopiclist_movie_key;
 	public TextView tv_sametopiclist_movie_desc;
+	private Button tv_mytopic_previewpage;
+	private Button tv_mytopic_nextpage;
+	LinearLayout mSubjectFooter;
 	public Button  sayButton;
 	public Button  abouybutton;
 	public Button moreButton;
@@ -229,17 +233,6 @@ public class HotTopicListActivity extends BaseActivity {
 				}
 			 }.execute();
 	}
-//	/**
-//	 * ²¶×½»ØÍË¼ü
-//	 */
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-//			showTips();
-//		return false;
-//		}
-//		return false;
-//		}
-
 			public final class ViewHolder{
 				public ImageView tv_sametopiclist_userimage;
 				public TextView tv_sametopiclist_username;
@@ -283,6 +276,16 @@ public class HotTopicListActivity extends BaseActivity {
 				return convertView;
 			}
 		}
-	
+		   void initView(){
+				listview = (ListView) this.findViewById(R.id.androidlist);
+				LayoutInflater inflater = LayoutInflater.from(this);
+				LinearLayout mSubjectFooter = (LinearLayout) inflater.inflate(
+						R.layout.subject_footer, null);
+				tv_mytopic_previewpage = (Button) mSubjectFooter
+						.findViewById(R.id.tv_mytopic_previewpage);
+				tv_mytopic_nextpage = (Button) mSubjectFooter
+						.findViewById(R.id.tv_mytopic_nextpage);
+				listview.addFooterView(mSubjectFooter);
+			}
 	
 }

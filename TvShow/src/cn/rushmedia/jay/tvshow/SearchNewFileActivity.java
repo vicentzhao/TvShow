@@ -175,7 +175,6 @@ public class SearchNewFileActivity extends BaseActivity {
 			 desc =(TextView) findViewById(R.id.movie_desc);
 			 tv_programedetail_btncoll=(Button) findViewById(R.id.tv_programedetail_btncoll);
 			 btn_movie_new_about =(Button)findViewById(R.id.btn_movie_new_about);
-			 btn_movie_say=(Button) findViewById(R.id.btn_movie_say);
 			 btn_movie_exit =(Button)findViewById(R.id.btn_movie_exit);
 			 movie_more =(Button)findViewById(R.id.movie_more);
 		 }

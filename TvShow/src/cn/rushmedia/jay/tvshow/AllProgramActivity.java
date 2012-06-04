@@ -23,6 +23,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,18 +47,25 @@ public class AllProgramActivity extends BaseActivity {
 	private RelativeLayout rl;
 	private MyAdapter adapter;
 	private int page = 1;
-	private int count = 20;
+	private int count = 10;
 	private ArrayList<Post> postList;
-
+	private LinearLayout mSubjectFooter;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.subject_2_program);
-		postList= new ArrayList<Post>();
 		appData = (AppData) getApplication();
 		rl = (RelativeLayout) findViewById(R.id.loading);
 		logininfo = appData.getLoginInfo();
 		appData.addActivity(this);
 		listview = (ListView) findViewById(R.id.subjectlist);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		mSubjectFooter = (LinearLayout) inflater.inflate(
+				R.layout.subject_footer, null);
+		Button tv_mytopic_previewpage = (Button) mSubjectFooter
+				.findViewById(R.id.tv_mytopic_previewpage);
+		Button tv_mytopic_nextpage = (Button) mSubjectFooter
+				.findViewById(R.id.tv_mytopic_nextpage);
+		listview.addFooterView(mSubjectFooter);
 		intiData(page, count);
 
 		listview.setOnItemClickListener(new OnItemClickListener() {
@@ -93,25 +101,25 @@ public class AllProgramActivity extends BaseActivity {
 		 * 上一页
 		 */
 
-		Button tv_prepage = (Button) findViewById(R.id.tv_prepage);
-		tv_prepage.setOnClickListener(new OnClickListener() {
+	
+		tv_mytopic_previewpage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (page == 1) {
 					Toast.makeText(getApplicationContext(), "已经是第一页", 1).show();
-				} else
+					return;
+				} else{
 					page = page - 1;
 				intiData(page, count);
 				adapter.notifyDataSetChanged();
-
+				}
 			}
 		});
 		/**
 		 * 下一页
 		 */
-		Button tv_nextpage = (Button) findViewById(R.id.tv_nextpage);
-		tv_nextpage.setOnClickListener(new OnClickListener() {
+		tv_mytopic_nextpage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -144,6 +152,7 @@ public class AllProgramActivity extends BaseActivity {
 			protected List doInBackground(Void... params) {
 				JsonUtil jsut = new JsonUtil();
 				try {
+					postList= new ArrayList<Post>();
 					String path = "http://tvsrv.webhop.net:8080/api/programs?page="
 							+ page2 + "&count=" + count2 + "";
 					JSONArray jsPostArray = jsut.getSource(path);

@@ -26,7 +26,6 @@
 			android:layout_width="60.0dip" android:layout_height="29.0dip"
 			android:layout_marginRight="5.0dip" android:src="@drawable/back_night_selector" />
 	</LinearLayout>
-
 		<ListView
 		    android:id="@+id/androidlist"
 		    android:layout_below="@id/title_bar"
@@ -34,7 +33,6 @@
 		    android:layout_height="fill_parent"
 		    android:layout_marginLeft="5.0dip"
 		    android:layout_marginRight="3.0dip"
-		    android:layout_weight="1.0"
 		    android:cacheColorHint="#00000000"
 		    android:divider="@color/transparent"
 		    android:dividerHeight="5.0dip"
@@ -42,24 +40,6 @@
 		    android:paddingTop="5.0dip"
 		    android:scrollbarStyle="outsideInset" >
 		</ListView>
-
-		<LinearLayout android:layout_width="fill_parent"
-	 				android:id="@+id/changeid"
-	 				android:layout_below="@id/androidlist"
-					android:gravity="center" android:paddingTop="40dip"
-					android:paddingBottom="10dip" android:layout_height="wrap_content"
-					>
-					<Button  android:id="@+id/tv_prepage"
-						android:width="100dp" android:layout_width="wrap_content"
-						android:background="@drawable/wp_button_small"
-						android:text="上一页"
-						android:layout_height="wrap_content"></Button>
-					<Button  android:id="@+id/tv_nextpage"
-						android:width="100dp" android:layout_width="wrap_content"
-						android:background="@drawable/wp_button_small"
-						android:text="下一页"
-						android:layout_height="wrap_content"></Button>
-				</LinearLayout>
 		<RelativeLayout android:layout_above="@id/mainRL"
 			android:id="@+id/loading" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:visibility="invisible">

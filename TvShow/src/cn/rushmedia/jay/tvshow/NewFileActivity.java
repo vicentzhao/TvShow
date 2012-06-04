@@ -53,7 +53,6 @@ public class NewFileActivity extends BaseActivity {
 	private Program movie;
 	private int programid;
 	private int userid;
-	
 	private RelativeLayout rl;
     private Button btn_movie_new_about;
     private Post post;
@@ -184,7 +183,20 @@ public class NewFileActivity extends BaseActivity {
 	    	public void onClick(View v) {
 	    		Intent sameTopicIntent = new Intent(NewFileActivity.this,MyPostActivity.class);
 				sameTopicIntent.putExtra("saydetial", post);
+				int programid =post.getTopic().getProgram().getId();
+				String path ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page=1&count=1";
+				JsonUtil jsut = new JsonUtil();
+				String array;
+				try {
+					array = jsut.getStringSource(path);
+				if(!"".equals(array)&&!"[]".equals(array)){
 				startActivity(sameTopicIntent);
+				}else{
+					Toast.makeText(NewFileActivity.this, "没有相应的评论", Toast.LENGTH_LONG).show();
+				}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}		
 				
 	    	}
 	    });

@@ -7,13 +7,8 @@
 
 
 	<ImageView android:id="@+id/image" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:layout_margin="5px"
-		android:paddingBottom="10dip" 
-		android:paddingRight="20dip"
-		android:scaleType="centerInside"
-		
+		android:layout_width="180dip"
+		android:layout_height="160dip" 
 		/>
 
 	<LinearLayout android:orientation="vertical"
@@ -23,15 +18,15 @@
 		<TextView android:id="@+id/title" 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
-			android:textColor="#cccc99"
-			android:textSize="22px" 
+			android:textColor="#000000"
+			android:textSize="32sp" 
 		
 			/>
 		<TextView android:id="@+id/actor" 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
 			android:textColor="#ff6699"
-			android:textSize="13px"
+			android:textSize="27sp"
 			android:ellipsize="start"
 			android:marqueeRepeatLimit="marquee_forever"
 			 />
@@ -39,7 +34,7 @@
 	     android:layout_width="wrap_content"
 		 android:layout_height="wrap_content" 
 		 android:textColor="#cccc33"
-		 android:textSize="13px"
+		 android:textSize="27sp"
 		 android:id="@+id/keyword"
 	     />
 

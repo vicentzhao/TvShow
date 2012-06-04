@@ -12,7 +12,6 @@
 		android:layout_height="200dip" 
 		android:layout_margin="5px"
 		android:src="@drawable/icon"
-		android:scaleType="centerInside"
 		/>
 		<TextView android:id="@+id/tv_sametopiclist_username" 
 			android:layout_width="wrap_content"

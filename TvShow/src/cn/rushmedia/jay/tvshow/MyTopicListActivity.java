@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -13,7 +12,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,8 +26,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.rushmedia.jay.tvshow.TopicListActivity.MyAdapter;
-import cn.rushmedia.jay.tvshow.TopicListActivity.ViewHolder;
 import cn.rushmedia.jay.tvshow.domain.AppData;
 import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Program;

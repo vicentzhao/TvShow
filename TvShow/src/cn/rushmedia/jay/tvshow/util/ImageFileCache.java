@@ -154,7 +154,6 @@ public class ImageFileCache {
 
 			file.delete();
 		}
-
 	}
 	/**
 	 * 修改文件的最后修改时间 这里需要考虑,是否将使用的图片日期改为当前日期
@@ -182,9 +181,16 @@ public class ImageFileCache {
 	}
 	/** 将url转成文件名 **/
 	private String convertUrlToFileName(String url) {
-		String extension = url.substring(url.lastIndexOf('/'),url.lastIndexOf("."));
+		int start = url.lastIndexOf('/');
+		int end =url.lastIndexOf(".");
+		if(start>=end){
+		String 	extension="unkownedpath";
+			return extension+WHOLESALE_CONV;
+		}else{
+		String extension = url.substring(start,end);
 		String fileName = extension.replace("/", "");
 		return fileName+WHOLESALE_CONV;
+		}
 		
 	}
 	/** 获得缓存目录 **/

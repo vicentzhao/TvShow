@@ -76,8 +76,6 @@ public class SameTopicListActivity extends BaseActivity {
 		ProgressDialog pd = new ProgressDialog(SameTopicListActivity.this) ;
 		appData =(AppData) getApplication();
 		appData.addActivity(this);
-		pd.setMessage("正在加载");
-		pd.show();
 		ImageButton backtohome = (ImageButton) findViewById(R.id.backtohome);
     	backtohome.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -86,13 +84,8 @@ public class SameTopicListActivity extends BaseActivity {
 			}
 		});
            topiclist = initData(page,count);
-    	
 		if(topiclist==null){
     		 Toast.makeText(SameTopicListActivity.this, "沒有相關的話題", 1).show();
-//			  Intent i = new Intent(SameTopicListActivity.this,NewFileActivity.class);
-//			  i.putExtra("saydetial",homeLineDiscu);
-//			  startActivity(i);
-//			  SameTopicListActivity.this.finish();
 			  finish();
     	}else{
 			Intent i = getIntent();
@@ -164,7 +157,7 @@ public class SameTopicListActivity extends BaseActivity {
 		Intent it =getIntent();
 		try {
 			homeLineDiscu = (Post) it.getSerializableExtra("saydetial");
-		programeid = homeLineDiscu.getTopic().getProgramid();
+		programeid = homeLineDiscu.getTopic().getProgram().getId();
 		JsonUtil js = new JsonUtil();
 		String sameTopicPath="http://tvsrv.webhop.net:8080/api/programs/"+programeid+"/topics?page="+page2+"&count="+count2+"";
 		Log.i("相关的话题===============>", sameTopicPath);
@@ -211,16 +204,6 @@ public class SameTopicListActivity extends BaseActivity {
 		}
 		
 	}
-//	/**
-//	 * 捕捉回退键
-//	 */
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-//			showTips();
-//		return false;
-//		}
-//		return false;
-//		}
 
 			public final class ViewHolder{
 				public ImageView tv_sametopiclist_userimage;

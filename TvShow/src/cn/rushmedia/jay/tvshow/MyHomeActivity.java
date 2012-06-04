@@ -24,6 +24,9 @@ import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageCash;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
+import cn.rushmedia.jay.tvshow.util.JSONObject2User;
+import cn.rushmedia.jay.tvshow.util.JSONObject2Topic;
+import cn.rushmedia.jay.tvshow.util.JSONObject2User;
 
 public class MyHomeActivity extends BaseActivity {
 	private JSONObject js;
@@ -31,8 +34,6 @@ public class MyHomeActivity extends BaseActivity {
 	private TextView tv_username;
 	private TextView tv_useremail;
 	private TextView tv_curtime;
-	private Button tv_home_forme;
-	private Button tv_home_followme;
 	private Button tv_home_writetopic;
 	private Button tv_home_join;
 	private Button tv_home_fans;
@@ -126,7 +127,7 @@ public class MyHomeActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Intent topicIntent = new Intent(MyHomeActivity.this,
-						TopicListActivity.class);
+						SameTopicListActivity.class);
 				startActivity(topicIntent);
 			}
 		});
@@ -199,19 +200,10 @@ public class MyHomeActivity extends BaseActivity {
 						MyFavProgramActivity.class);
 				try {
 					JSONObject js = new JSONObject(loginInfo);
-					String username = js.getString("name");
-					String email = js.getString("email");
-					int userid = js.getInt("id");
-					String image = js.getString("image");
-					long create_date = js.getLong("created-at");
-					User user = new User();
-					user.setEmail(email);
-					user.setId(userid);
-					user.setCreated_at(create_date);
-					user.setName(username);
-					user.setImage(image);
+					JSONObject2User ju = new JSONObject2User();
+					User user = ju.getUser(js);
 					myPostListIntent.putExtra("userinfo", user);
-				} catch (JSONException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -228,19 +220,10 @@ public class MyHomeActivity extends BaseActivity {
 						MyFavTopicsActivity_1.class);
 				try {
 					JSONObject js = new JSONObject(loginInfo);
-					String username = js.getString("name");
-					String email = js.getString("email");
-					int userid = js.getInt("id");
-					String image = js.getString("image");
-					long create_date = js.getLong("created-at");
-					User user = new User();
-					user.setEmail(email);
-					user.setId(userid);
-					user.setCreated_at(create_date);
-					user.setName(username);
-					user.setImage(image);
+					JSONObject2User ju = new JSONObject2User();
+					User user = ju.getUser(js);
 					myPostListIntent.putExtra("userinfo", user);
-				} catch (JSONException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -254,32 +237,21 @@ public class MyHomeActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(),
-						MyPostListActivity_1.class);
-				Post home = new Post();
 				try {
+					Intent i = new Intent(getApplicationContext(),
+							MyPostListActivity_1.class);
 					JSONObject js = new JSONObject(loginInfo);
-					String username = js.getString("name");
-					String email = js.getString("email");
-					int userid = js.getInt("id");
-					String image = js.getString("image");
-					long create_date = js.getLong("created-at");
-					User user = new User();
-					user.setEmail(email);
-					user.setId(userid);
-					user.setCreated_at(create_date);
-					user.setName(username);
-					user.setImage(image);
-					Topic topic = new Topic();
-					topic.setUser(user);
-					home.setTopic(topic);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					JSONObject2User ju = new JSONObject2User();
+					User user = ju.getUser(js);
+					Post myPost = new Post();
+					Topic t = new Topic();
+					t.setUser(user);
+					myPost.setTopic(t);
+					i.putExtra("topic", myPost);
+					startActivity(i);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				i.putExtra("topic", home);
-				startActivity(i);
-
 			}
 		});
 	}
@@ -301,8 +273,6 @@ public class MyHomeActivity extends BaseActivity {
 		tv_username = (TextView) findViewById(R.id.tv_home_user_name);
 		tv_useremail = (TextView) findViewById(R.id.tv_home_user_emali);
 		tv_curtime = (TextView) findViewById(R.id.tv_home_user_currtime);
-		// tv_home_forme=(Button) findViewById(R.id.tv_home_forme);
-		// tv_home_followme=(Button) findViewById(R.id.tv_home_followme);
 		tv_home_writetopic = (Button) findViewById(R.id.tv_home_writetopic);
 		tv_home_join = (Button) findViewById(R.id.tv_home_join);
 		tv_home_fans = (Button) findViewById(R.id.tv_home_fans);

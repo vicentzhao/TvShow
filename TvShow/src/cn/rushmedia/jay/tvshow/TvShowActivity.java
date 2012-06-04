@@ -50,30 +50,9 @@ public class TvShowActivity extends BaseActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
 			showTips();
-			if(keyCode == KeyEvent.KEYCODE_BACK){
-				if(!isExit){
-					isExit=true;
-					Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-					mHandler.sendEmptyMessageDelayed(0, 2000);
-				}
-				else{
-					finish();
-					System.exit(0);
-				}
-			}
-			return false;
 		}
 		return false;
 		}
-	boolean isExit=false;
-	Handler mHandler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			isExit=false;
-		}
-		
-	};
 	
 	
 	private void initData() {

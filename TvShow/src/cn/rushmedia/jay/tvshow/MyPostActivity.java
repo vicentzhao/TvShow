@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -76,16 +77,21 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	private ProgressBar progressBar;
 	private LinearLayout mSubjectFooter;
 	private boolean isFirstLoading = true;
+	private boolean isSameList =false;
+	private ArrayList<Post> proPost;
+	private boolean isPostProgram=false;
+	private int programid;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.subject);
-		repostList = new ArrayList<Repost>();
 		initView();
+		proPost = new ArrayList<Post>();
 		Intent it =getIntent();
 		Post post =(Post)it.getSerializableExtra("saydetial");
 		if(post!=null){
-		 int programid =post.getTopic().getProgramid();
+			isPostProgram=true;
+		 programid =post.getTopic().getProgram().getId();
 	       path ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page="+page+"&count="+count+"";
 		}else{
 			try {
@@ -103,7 +109,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 		}
 		tv_mytopic_previewpage.setOnClickListener(this);
 		tv_mytopic_nextpage.setOnClickListener(this);
-		intiData(page, count,path);
+		intiData(path);
 		/**
 		 * 设置监听事件，监听listview的改变
 		 */
@@ -121,17 +127,16 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 		});
 	}
 
-
-	/**
-	 * 捕捉回退键
-	 */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-         if(keyCode == KeyEvent.KEYCODE_BACK){
-        	 showTips();
-         }
-         return false;
-    }
+//	/**
+//	 * 捕捉回退键
+//	 */
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//         if(keyCode == KeyEvent.KEYCODE_BACK){
+//        	 showTips();
+//         }
+//         return false;
+//    }
 
 	/**
 	 * 为adapter初始化数据
@@ -141,7 +146,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	 * @param count
 	 *            每页显示的个数
 	 */
-	private void intiData(final int page, final int count,final String initPath) {
+	private void intiData(final String initPath) {
 		postList = new ArrayList<Post>();
 		isloading = true;
 		new AsyncTask<Void, Void, JSONArray>() {
@@ -440,6 +445,10 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 						if(result!=null){
 							cache.saveBmpToSd(result, userImagePath);
 						holder.tv_homeline_userimage.setImageBitmap(result);
+						}else{
+						 Bitmap bit =BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+						 cache.saveBmpToSd(bit, userImagePath);
+							holder.tv_homeline_userimage.setImageBitmap(bit);
 						}
 						super.onPostExecute(result);
 					}
@@ -521,7 +530,15 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	private void loadmoreItem() {
 		page = page + 1;
 		count = 10;
-		intiData(page, count,path);
+		if(isPostProgram){
+			String postProgramPath ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page="+page+"&count="+count+"";
+			intiData(postProgramPath);
+		}else{
+			String homePath ="http://tvsrv.webhop.net:8080/api/users/"
+					+ userid + "/homeline?page=" + page + "&count="
+					+ count + "";
+			intiData(homePath);
+		}
 	}
 	private void loadlessItem() {
 
@@ -532,7 +549,15 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			mSubjectFooter.setVisibility(View.VISIBLE);
 			Toast.makeText(this, "已经到达首页", Toast.LENGTH_SHORT).show();
 		} else {
-			intiData(page, count,path);
+			if(isPostProgram){
+				String postProgramPath ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page="+page+"&count="+count+"";
+				intiData(postProgramPath);
+			}else{
+				String homePath ="http://tvsrv.webhop.net:8080/api/users/"
+						+ userid + "/homeline?page=" + page + "&count="
+						+ count + "";
+				intiData(homePath);
+			}
 		}
 	}
 	@Override
@@ -549,7 +574,6 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 	void initView(){
-		LinearLayout layout = new LinearLayout(this);
 		listView = (ListView) this.findViewById(R.id.androidlist);
 		LayoutInflater inflater = LayoutInflater.from(this);
 		mSubjectFooter = (LinearLayout) inflater.inflate(
