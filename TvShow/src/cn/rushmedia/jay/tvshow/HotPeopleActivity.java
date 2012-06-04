@@ -113,16 +113,7 @@ public class HotPeopleActivity extends BaseActivity {
 		}
 	});
 	}
-//	/**
-//	 * ²¶×½»ØÍË¼ü
-//	 */
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-//			showTips();
-//		return false;
-//		}
-//		return false;
-//		}
+
 	 class MyAdapter extends BaseAdapter{
 		   private LayoutInflater mInflater;
 			public MyAdapter(Context context){

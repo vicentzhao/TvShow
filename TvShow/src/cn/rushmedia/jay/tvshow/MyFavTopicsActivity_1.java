@@ -37,6 +37,8 @@ import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageCash;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
+import cn.rushmedia.jay.tvshow.util.ImageFileCache;
+import cn.rushmedia.jay.tvshow.util.JSONObject2Topic;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 
 public class MyFavTopicsActivity_1 extends BaseActivity {
@@ -70,10 +72,9 @@ public class MyFavTopicsActivity_1 extends BaseActivity {
 	private List<Bitmap> imageList;
 	private int id;
 	private RelativeLayout r1;
-	MyAdapter myAdapter;
+	private MyAdapter myAdapter;
 	private ListView listview;
 	private  User userinfo;
-	Bitmap bitmap;
 	private int programeid;
 	int page = 1;
 	int count = 8;
@@ -180,53 +181,22 @@ public class MyFavTopicsActivity_1 extends BaseActivity {
 				protected List doInBackground(Void... params) {
 					try {
 						JsonUtil js = new JsonUtil();
-						String sameTopicPath="http://tvsrv.webhop.net:8080/api/users/"+id+"/topics?"+"page="+page+"&count="+count+"";
+						String sameTopicPath="http://tvsrv.webhop.net:8080/api/users/"+id+"/favorite-topics?"+"page="+page+"&count="+count+"";
 						String stringSource = js.getStringSource(sameTopicPath);
 						sameTopic = new JSONArray(stringSource);
-						if(stringSource!=null&&"[]".equals(stringSource)){
+						if(stringSource!=null&&!"[]".equals(stringSource)){
 						topicArraylist = new ArrayList<Topic>();
 						for (int i = 0; i < sameTopic.length(); i++) {
 							 topic = new 	Topic();
 								JSONObject  sametopicjb=sameTopic.getJSONObject(i);
-								topic_name=sametopicjb.getString("name");
-								programeid=sametopicjb.getInt("programid");
-								topic.setProgramid(programeid);
-								topic.setTopic_name(topic_name);
-								JSONObject userjsob = sametopicjb.getJSONObject("user");
-								JSONObject programjsob = sametopicjb.getJSONObject("program");
-								String programname=programjsob.getString("title");
-								String imagePath = programjsob.getString("image");
-								String desc =programjsob.getString("description");
-								String programdirector = programjsob.getString("director");
-								String actor = programjsob.getString("actor");
-								Program  p = new Program();
-								p.setTitle(programname);
-								p.setActor(actor);
-								p.setDirector(programdirector);
-								p.setImagePath(imagePath);
-								p.setDescription(desc);
-								String username = userjsob.getString("name");
-								String  userimagepath = userjsob.getString("image");
-								User user = new User();
-								user.setName(username);
-								user.setImage(userimagepath);
-								topic.setUser(user);
-								topic.setProgram(p);
-								topic.setProgramid(programeid);
+								JSONObject2Topic jt = new JSONObject2Topic();
+								 topic = jt.getTopic(sametopicjb);
 								topicArraylist.add(topic);
 						}
 						return topicArraylist;
 						}else 
 							return null;
 						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						String imagepath=topicArraylist.get(0).getUser().getImage();
-						ImageDownloder imageDownloder = new ImageDownloder();
-						 try {
-							bitmap = imageDownloder.imageDownloder(imagepath);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					return topicArraylist;
@@ -281,7 +251,22 @@ public class MyFavTopicsActivity_1 extends BaseActivity {
 					holder = (ViewHolder)convertView.getTag();
 				}
 				appData =(AppData) getApplication(); 
-				holder.tv_sametopiclist_userimage.setImageBitmap(bitmap);
+				String imagePath = topicArraylist.get(position).getUser().getImage();
+				ImageFileCache ic = ImageFileCache.getCashInstance();
+				Bitmap bitMapCache = ic.getImage(imagePath);
+				if(bitMapCache==null){
+					try {
+						ImageDownloder  downloder = new ImageDownloder();
+						Bitmap bitMap = downloder.imageDownloder(imagePath);
+						ic.saveBmpToSd(bitMap, imagePath);
+						holder.tv_sametopiclist_userimage.setImageBitmap(bitMap);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else{
+				holder.tv_sametopiclist_userimage.setImageBitmap(bitMapCache);
+				}
 				holder.tv_sametopiclist_username.setText(topicArraylist.get(position).getUser().getName());
 				holder.tv_sametopiclist_topicname.setText(topicArraylist.get(position).getTopic_name());
 				return convertView;
