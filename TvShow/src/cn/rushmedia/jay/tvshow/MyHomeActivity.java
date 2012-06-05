@@ -127,7 +127,7 @@ public class MyHomeActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Intent topicIntent = new Intent(MyHomeActivity.this,
-						SameTopicListActivity.class);
+						MyTopicListActivity.class);
 				startActivity(topicIntent);
 			}
 		});
@@ -151,7 +151,15 @@ public class MyHomeActivity extends BaseActivity {
 			public void onClick(View v) {
 				Intent myTopicListIntent = new Intent(MyHomeActivity.this,
 						MyTopicListActivity.class);
-				startActivity(myTopicListIntent);
+				JSONObject2User ju = new JSONObject2User();
+				try {
+					User user = ju.getUser(js);
+					myTopicListIntent.putExtra("userinfo", user);
+					startActivity(myTopicListIntent);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		/**
@@ -217,7 +225,7 @@ public class MyHomeActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Intent myPostListIntent = new Intent(MyHomeActivity.this,
-						MyFavTopicsActivity_1.class);
+						SameTopicListActivity.class);
 				try {
 					JSONObject js = new JSONObject(loginInfo);
 					JSONObject2User ju = new JSONObject2User();

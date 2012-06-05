@@ -201,7 +201,7 @@ public class UsersListDetailActivity extends BaseActivity {
 			tv_home_collecttopic.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent myPostListIntent = new Intent(UsersListDetailActivity.this,MyFavTopicsActivity_1.class);
+					Intent myPostListIntent = new Intent(UsersListDetailActivity.this,SameTopicListActivity.class);
 					startActivity(myPostListIntent);
 				}
 			});

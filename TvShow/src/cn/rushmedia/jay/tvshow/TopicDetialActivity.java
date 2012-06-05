@@ -86,7 +86,7 @@ public class TopicDetialActivity extends BaseActivity {
 	    tv_topicdetia_reviewprogram.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent sameTopicIntent = new Intent(TopicDetialActivity.this,MyTopicActivity.class);
+				Intent sameTopicIntent = new Intent(TopicDetialActivity.this,MyPostActivity.class);
 				sameTopicIntent.putExtra("saydetial",home);
 				startActivity(sameTopicIntent);
 			}
@@ -139,8 +139,6 @@ public class TopicDetialActivity extends BaseActivity {
 	    	 * 相关话题的帖子
 	    	 */
 	    	tv_sametopic_topicpost.setOnClickListener(new OnClickListener() {
-				
-				@Override
 				public void onClick(View v) {
 					Intent  i = new Intent(TopicDetialActivity.this,SameTopicPostListActivity.class);
 					i.putExtra("home", home);
@@ -183,16 +181,6 @@ public class TopicDetialActivity extends BaseActivity {
 	    
 	    	
 	}
-//	/**
-//	 * 捕捉回退键
-//	 */
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-//			showTips();
-//		return false;
-//		}
-//		return false;
-//		}
 	
 	private void init() {
 		back_button = (ImageButton) findViewById(R.id.back_button);

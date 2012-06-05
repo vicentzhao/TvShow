@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
 import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
@@ -99,9 +100,22 @@ public class PostsDetialActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-			    Intent sameTopicIntent = new Intent(PostsDetialActivity.this,SameTopicList_postActivity.class);
-			    sameTopicIntent.putExtra("saydetial",post);
-			    startActivity(sameTopicIntent);
+			    Intent sameTopicIntent = new Intent(PostsDetialActivity.this,SameTopicListActivity.class);
+			    int programeid =post.getTopic().getProgram().getId();
+			    String sameTopicPath="http://tvsrv.webhop.net:8080/api/programs/"+programeid+"/topics?page="+1+"&count="+1+"";
+			    JsonUtil ju = new JsonUtil();
+			    String source;
+				try {
+					source = ju.getStringSource(sameTopicPath);
+					if(source!=null&&!"[]".equals(source)){
+						sameTopicIntent.putExtra("saydetial",post);
+						startActivity(sameTopicIntent);
+					}else{
+						Toast.makeText(PostsDetialActivity.this, "没有相应的话题", Toast.LENGTH_SHORT).show();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			    
 			}
 		});

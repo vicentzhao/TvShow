@@ -80,9 +80,7 @@ public class ImageFileCache {
 			Log.w("ImageFileCache", "IOException");
 		}
 	}
-
 	private static final int CACHE_SIZE = 10;
-
 	// 清理缓存
 	/**
 	 * 计算存储目录下的文件大小，
