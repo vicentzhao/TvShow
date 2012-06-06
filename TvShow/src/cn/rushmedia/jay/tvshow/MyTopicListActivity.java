@@ -50,6 +50,7 @@ public class MyTopicListActivity extends BaseActivity {
 	private ImageFileCache  cache;
 	private JSONArray sameTopic;
 	private Topic topic;
+	private List<Topic> topicCache;
 	private List<Topic> topiclist;
 	private ListView listview;
 	private Post post;
@@ -90,7 +91,7 @@ public class MyTopicListActivity extends BaseActivity {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 						Intent i  = new Intent(MyTopicListActivity.this,TopicDetialActivity.class);
-						Topic topic =topiclist.get(position);
+						Topic topic =topicCache.get(position);
 						Post home = new Post();
 						home.setTopic(topic);
 						i.putExtra("topic", home);
@@ -147,13 +148,11 @@ public class MyTopicListActivity extends BaseActivity {
 			   					page=page-1;
 			   					Toast.makeText(MyTopicListActivity.this, "这已经是最后一页", 1).show();
 			   				}
-		   				
-		   			
 		   		}else{
 		   			page=page+1;
 		   			String sameTopicPath="http://tvsrv.webhop.net:8080/api/topics?"+"page="+page+"&count="+count+"";
 		   			ArrayList<Topic> initData =initData(sameTopicPath);
-		   			if(initData!=null&&"[]".equals(initData)){
+		   			if(initData!=null&&!"[]".equals(initData)){
 						listview.setAdapter(new MyAdapter(MyTopicListActivity.this, initData));
 		   				}
 		   				else{
@@ -165,10 +164,11 @@ public class MyTopicListActivity extends BaseActivity {
    	
 	}			
 	private ArrayList<Topic> initData(String downPath) {
+		topicCache = new ArrayList<Topic>();
 		ArrayList<Topic> topicArraylist = new ArrayList<Topic>();
 		Intent it =getIntent();
 		try {
-			JsonUtil js = new JsonUtil();
+		JsonUtil js = new JsonUtil();
 		String sametopicss =js.getStringSource(downPath);
 		sameTopic = js.getSource(downPath);
 		if(sameTopic!=null&&!"[]".equals(sametopicss)){
@@ -178,6 +178,7 @@ public class MyTopicListActivity extends BaseActivity {
 			topic = jt.getTopic(sametopicjb);
 			topicArraylist.add(topic);
 		}
+		topicCache =topicArraylist;
 		return  topicArraylist;
 		  }else{
 			  return  null;
@@ -188,7 +189,6 @@ public class MyTopicListActivity extends BaseActivity {
 		}
 		
 	}
-
 			public final class ViewHolder{
 				public ImageView tv_sametopiclist_userimage;
 				public TextView tv_sametopiclist_username;

@@ -1,5 +1,6 @@
 package cn.rushmedia.jay.tvshow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -33,9 +34,9 @@ import cn.rushmedia.jay.tvshow.util.JsonUtil;
 
 public class MyFavProgramActivity extends BaseActivity {
 
-	List<Program> mData;
-	ListView listview;
-	ViewHolder holder;
+	private List<Program> mData;
+	private ListView listview;
+	private ViewHolder holder;
 	private AppData appData;
 	private String logininfo;
 	private RelativeLayout rl;
@@ -46,7 +47,7 @@ public class MyFavProgramActivity extends BaseActivity {
 	private User userinfo;
 	private Button tv_mytopic_previewpage;
 	private Button tv_mytopic_nextpage;
-
+	private  List<Program> myProgramList ;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.subject_2_program);
@@ -63,7 +64,7 @@ public class MyFavProgramActivity extends BaseActivity {
 					int position, long id) {
 				Intent intent = new Intent(getApplicationContext(),
 						NewFileActivity.class);
-				Program movie = mData.get(position);
+				Program movie = myProgramList.get(position);
 				Post home = new Post();
 				Topic t = new Topic();
 				t.setProgramid(movie.getId());
@@ -97,9 +98,7 @@ public class MyFavProgramActivity extends BaseActivity {
 		 /**
 		 * 上一页
 		 */
-		
 		tv_mytopic_previewpage.setOnClickListener(new OnClickListener() {
-		
 		 @Override
 		 public void onClick(View v) {
 		 if(page==1){
@@ -114,7 +113,6 @@ public class MyFavProgramActivity extends BaseActivity {
 		 * 下一页
 		 */
 		tv_mytopic_nextpage.setOnClickListener(new OnClickListener() {
-		
 		 @Override
 		 public void onClick(View v) {
 		 page =page+1;
@@ -128,50 +126,26 @@ public class MyFavProgramActivity extends BaseActivity {
 		 }
 		 });
 	}
-
 	private List<Program> intiData(final int page2, final int count2) {
-		new AsyncTask<Void, Void, List>() {
+		myProgramList= new ArrayList<Program>();
 
-			@Override
-			protected void onPreExecute() {
-				showProgress(rl);
-				super.onPreExecute();
-			}
-
-			@Override
-			protected void onPostExecute(List result) {
-				hideProgress(rl);
-				if (result != null) {
-					super.onPostExecute(result);
-					
-				} else {
-					Toast.makeText(getApplicationContext(), "没有相应的内容", 1)
-							.show();
-					finish();
-				}
-			}
-
-			protected List doInBackground(Void... params) {
 				JsonUtil jsut = new JsonUtil();
-				try {
 					String path = "http://tvsrv.webhop.net:8080/api/users/"
 							+ id + "/favorite-programs?page=" + page2
 							+ "&count=" + count2 + "";
-					mData = jsut.getMovie(path);
-					for (int i = 0; i < mData.size(); i++) {
-						Program p = mData.get(i);
+					try {
+						myProgramList = jsut.getMovie(path);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					for (int i = 0; i < myProgramList.size(); i++) {
+						Program p = myProgramList.get(i);
 						if ((p.getId()) == 0) {
-							mData.remove(i);
+							myProgramList.remove(i);
 						}
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return mData;
-			}
-
-		}.execute();
-		return mData;
+		return myProgramList;
 	}
 
 	public final class ViewHolder {
@@ -184,16 +158,16 @@ public class MyFavProgramActivity extends BaseActivity {
 	class MyAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;
-		private List<Program> proList;
+		private List<Program> myProgramList;
 
 		public MyAdapter(Context context, List result) {
 			this.mInflater = LayoutInflater.from(context);
-			this.proList = result;
+			this.myProgramList = result;
 		}
 
 		@Override
 		public int getCount() {
-			return proList.size();
+			return myProgramList.size();
 		}
 
 		public Object getItem(int arg0) {
@@ -220,28 +194,28 @@ public class MyFavProgramActivity extends BaseActivity {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			ImageFileCache cache = ImageFileCache.getCashInstance();
-			Bitmap bitmap = cache.getImage(proList.get(position).getImagePath());
+			Bitmap bitmap = cache.getImage(myProgramList.get(position).getImagePath());
 			ImageDownloder imageDownloder = new ImageDownloder();
 			
 			if (bitmap != null) {
 				holder.img.setImageBitmap(bitmap);
 			} else {
 				try {
-				Bitmap	dowmBitmap = imageDownloder.imageDownloder(proList.get(position)
+				Bitmap	dowmBitmap = imageDownloder.imageDownloder(myProgramList.get(position)
 							.getImagePath());
 				holder.img.setImageBitmap(dowmBitmap);
-				cache.saveBmpToSd(dowmBitmap, proList.get(position).getImagePath());
+				cache.saveBmpToSd(dowmBitmap, myProgramList.get(position).getImagePath());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			holder.title.setText(getApplication().getResources().getString(
 					R.string.see_filename)
-					+ ":" + (String) proList.get(position).getTitle());
+					+ ":" + (String) myProgramList.get(position).getTitle());
 			holder.actor.setText(getApplication().getResources().getString(
 					R.string.see_actor)
-					+ ":" + (String) proList.get(position).getActor());
-			holder.keyword.setText(proList.get(position).getKey());
+					+ ":" + (String) myProgramList.get(position).getActor());
+			holder.keyword.setText(myProgramList.get(position).getKey());
 
 			return convertView;
 		}

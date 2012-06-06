@@ -234,7 +234,6 @@ public class NewFileActivity extends BaseActivity {
 				String result = EntityUtils.toString(response.getEntity());
 				System.out.println(result+"============>>");
 				int statusCode = response.getStatusLine().getStatusCode();
-				
 				return statusCode;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

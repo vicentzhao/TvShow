@@ -180,7 +180,7 @@ public class UsersListDetailActivity extends BaseActivity {
 			tv_home_join.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent myPostListIntent = new Intent(UsersListDetailActivity.this,MyPostListActivity_1.class);
+					Intent myPostListIntent = new Intent(UsersListDetailActivity.this,MyPostActivity.class);
 					startActivity(myPostListIntent);
 				}
 			});

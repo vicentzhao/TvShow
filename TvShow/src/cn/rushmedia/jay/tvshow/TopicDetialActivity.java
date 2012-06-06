@@ -6,7 +6,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import android.app.Application;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -21,7 +25,11 @@ import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
 import cn.rushmedia.jay.tvshow.domain.Post;
 import cn.rushmedia.jay.tvshow.domain.Topic;
+import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
+import cn.rushmedia.jay.tvshow.util.JSONObject2Topic;
+import cn.rushmedia.jay.tvshow.util.JSONObject2User;
+import cn.rushmedia.jay.tvshow.util.JsonUtil;
 
 public class TopicDetialActivity extends BaseActivity {
 	private ImageButton back_button;
@@ -40,6 +48,7 @@ public class TopicDetialActivity extends BaseActivity {
 	private Button tv_sametopic_disctopic;
 	private Button tv_sametopic_topicpost;
 	private Button tv_sametopic_ctopic;
+	private boolean isCollected=false;
 	private Post home;
 	private HttpResponse response;
 	@Override
@@ -47,12 +56,12 @@ public class TopicDetialActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.topicdetail);
-		init();
-		AppData ap =(AppData) getApplication();
-		ap.addActivity(this);
 	    Intent i = getIntent();
 	   home = (Post) i.getSerializableExtra("topic");
+	   int topicId = home.getTopic().getId();
+	   isCollected(topicId);
 	    final Topic topic = home.getTopic();
+	    initView();
 	    back_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -64,7 +73,6 @@ public class TopicDetialActivity extends BaseActivity {
 			}
 		});
 	    ImageDownloder id = new ImageDownloder();
-	   
 	    String userimagepath = topic.getUser().getImage();
 	    String programimagepath =topic.getProgram().getImagePath();
 	    try {
@@ -99,7 +107,7 @@ public class TopicDetialActivity extends BaseActivity {
 			public void onClick(View v) {
 				Post homeLineDiscu  = new Post();
 				homeLineDiscu.setTopic(topic);
-				Intent MyReviewIntent = new Intent(TopicDetialActivity.this,NewFile_topic_Activity.class);
+				Intent MyReviewIntent = new Intent(TopicDetialActivity.this,NewFileActivity.class);
 				MyReviewIntent.putExtra("saydetial",homeLineDiscu);
 				startActivity(MyReviewIntent);
 			}
@@ -152,37 +160,33 @@ public class TopicDetialActivity extends BaseActivity {
 				
 				@Override
 				public void onClick(View v) {
-					int topicid =home.getTopic().getId();
-					int userid =home.getTopic().getUser().getId();
-					String json="{\"id\":\""+topicid+"\"}";
-					String url="http://tvsrv.webhop.net:8080/api/users/"+userid+"/favorite-topics";
-					DefaultHttpClient httpClient = new DefaultHttpClient();
-					HttpPost request = new HttpPost(url);
-					// 绑定到请求 Entry 
-							// 发送请求 
-							try {
-								StringEntity entity = new StringEntity(json);
-								request.setEntity(entity); 
-								request.setHeader("Content-Type", "application/json");
-								response = httpClient.execute(request); 
-								String result = EntityUtils.toString(response.getEntity());
-								System.out.println(result+"============>>");
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-								Toast.makeText(getApplicationContext(), "提交成功", 1).show();
-								tv_sametopic_ctopic.setText("已收藏");
-								tv_sametopic_ctopic.setClickable(false);
-							}
+					User loginUser = getLoginUser();
+					 int userid =loginUser.getId();
+					if(isCollected){
+						String unPath ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/unfavorite-topics";
+						int code = collectTopic(unPath);
+						if(code==HttpStatus.SC_OK){
+							Toast.makeText(getApplicationContext(), "取消收藏成功", 1).show();
+							tv_sametopic_ctopic.setText("收藏");
+							isCollected=false;
+						}else{
+							Toast.makeText(getApplicationContext(), "取消收藏失败，请重试", 1).show();
+						}
+					}else{
+					 String collectPath="http://tvsrv.webhop.net:8080/api/users/"+userid+"/favorite-topics";
+	                     int collectcode = collectTopic(collectPath);
+								if (collectcode == HttpStatus.SC_OK){
+									Toast.makeText(getApplicationContext(), "收藏成功", 1).show();
+									tv_sametopic_ctopic.setText("取消收藏");
+									isCollected=true;
+								}else{
+									Toast.makeText(getApplicationContext(), "收藏失败，请重试", 1).show();
+								}
+				}
 				}
 			});
-	    
-	    	
 	}
-	
-	private void init() {
+	private void initView() {
 		back_button = (ImageButton) findViewById(R.id.back_button);
 		tv_homeline_programimage = (ImageView) findViewById(R.id.tv_homeline_programimage);
 		tv_topic_userimage =(ImageView) findViewById(R.id.tv_topic_userimage);
@@ -195,7 +199,64 @@ public class TopicDetialActivity extends BaseActivity {
 		tv_topicdetial_programdetail=(Button) findViewById(R.id.tv_topicdetial_programdetail);
 		tv_sametopic_isaytopic=(Button) findViewById(R.id.tv_sametopic_isaytopic);
 		tv_sametopic_backtohome=(Button) findViewById(R.id.tv_sametopic_backtohome);
-		tv_sametopic_ctopic = (Button)findViewById(R.id.tv_sametopic_ctopic);
 		tv_sametopic_topicpost=(Button) findViewById(R.id.tv_sametopic_topicpost);
+		tv_sametopic_ctopic =(Button) findViewById(R.id.tv_sametopic_ctopic);
+		 if(isCollected){
+			 tv_sametopic_ctopic.setText("取消收藏");
+		 }else{
+			 tv_sametopic_ctopic.setText("收藏话题");
+		 }
 	}
+	public User getLoginUser(){
+		AppData userInfo = (AppData) getApplication();
+		String loginInfo = userInfo.getLoginInfo();
+		JSONObject2User ju = new JSONObject2User();
+		User user = null;
+		try {
+			user = ju.getUser(new JSONObject(loginInfo));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		return user;
+	}
+	 public boolean isCollected(int topicId){
+		 try {
+			User loginUser = getLoginUser();
+			 int userid =loginUser.getId();
+			 String path ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/favorite-topics";
+			 JsonUtil ju = new JsonUtil();
+			 JSONArray favtopicArray = ju.getSource(path);
+			 for (int i = 0; i < favtopicArray.length(); i++) {
+				JSONObject jsTopic  =favtopicArray.getJSONObject(i);
+				JSONObject2Topic jt = new JSONObject2Topic();
+				Topic topic = jt.getTopic(jsTopic);
+				if(topicId==topic.getId()){
+					isCollected=true;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 return false;
+	 }
+	  public int collectTopic(String url){
+		  HttpResponse response;
+		  try {
+			    int topicId = home.getTopic().getId();
+			    String json="{\"id\":\""+topicId+"\"}";
+				DefaultHttpClient httpClient = new DefaultHttpClient();
+				HttpPost request = new HttpPost(url);
+				StringEntity entity = new StringEntity(json,"utf-8");
+				request.setEntity(entity); 
+				request.setHeader("Content-Type", "application/json");
+				response = httpClient.execute(request); 
+				String result = EntityUtils.toString(response.getEntity());
+				System.out.println(result+"============>>");
+				int statusCode = response.getStatusLine().getStatusCode();
+				return statusCode;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+	  }
 }

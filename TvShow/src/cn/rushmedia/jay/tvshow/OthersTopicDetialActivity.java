@@ -91,21 +91,18 @@ public class OthersTopicDetialActivity extends BaseActivity {
 			public void onClick(View v) {
 				Post homeLineDiscu  = new Post();
 				homeLineDiscu.setTopic(topic);
-				Intent MyReviewIntent = new Intent(OthersTopicDetialActivity.this,NewFile_topic_Activity.class);
+				Intent MyReviewIntent = new Intent(OthersTopicDetialActivity.this,NewFileActivity.class);
 				MyReviewIntent.putExtra("saydetial",homeLineDiscu);
 				startActivity(MyReviewIntent);
 				
 			}
 		});
-	   
 	    	tv_sametopic_isaytopic.setOnClickListener(new OnClickListener() {
-				
 				@Override
 				public void onClick(View v) {
 				  Intent i = new Intent(OthersTopicDetialActivity.this,NewTopicActivity.class);
 				  i.putExtra("home", home);
 				  startActivity(i);
-					
 				}
 			});
 	    	tv_sametopic_backtohome.setOnClickListener(new OnClickListener() {
@@ -116,9 +113,7 @@ public class OthersTopicDetialActivity extends BaseActivity {
 					startActivity(i);
 					finish();
 				}
-			
 	    	});
-	    	
 	    	/**
 	    	 * 相关话题的帖子
 	    	 */
@@ -132,18 +127,6 @@ public class OthersTopicDetialActivity extends BaseActivity {
 	    		}
 	    	});
 	}
-//	/**
-//	 * 捕捉回退键
-//	 */
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-//			showTips();
-//		return false;
-//		}
-//		return false;
-//		}
-
-
 	private void init() {
 		back_button = (ImageButton) findViewById(R.id.back_button);
 		tv_homeline_programimage = (ImageView) findViewById(R.id.tv_homeline_programimage);

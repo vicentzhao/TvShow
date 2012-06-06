@@ -170,7 +170,7 @@ public class MyHomeActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Intent myPostListIntent = new Intent(MyHomeActivity.this,
-						MyPostListActivity_1.class);
+						MyPostActivity.class);
 				Post home = new Post();
 				try {
 					JSONObject js = new JSONObject(loginInfo);
@@ -247,7 +247,7 @@ public class MyHomeActivity extends BaseActivity {
 			public void onClick(View v) {
 				try {
 					Intent i = new Intent(getApplicationContext(),
-							MyPostListActivity_1.class);
+							MyPostActivity.class);
 					JSONObject js = new JSONObject(loginInfo);
 					JSONObject2User ju = new JSONObject2User();
 					User user = ju.getUser(js);

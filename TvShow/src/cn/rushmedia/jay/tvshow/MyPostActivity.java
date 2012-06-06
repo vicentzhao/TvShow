@@ -14,9 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +24,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -35,9 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.rushmedia.jay.tvshow.domain.AppData;
 import cn.rushmedia.jay.tvshow.domain.Post;
-import cn.rushmedia.jay.tvshow.domain.Post;
-import cn.rushmedia.jay.tvshow.domain.Program;
 import cn.rushmedia.jay.tvshow.domain.Repost;
+import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.util.ImageCash;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
 import cn.rushmedia.jay.tvshow.util.ImageFileCache;
@@ -74,12 +69,11 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 	private String path;
 	int page = 1;
 	int count = 10;
-	private ProgressBar progressBar;
 	private LinearLayout mSubjectFooter;
 	private boolean isFirstLoading = true;
-	private boolean isSameList =false;
 	private ArrayList<Post> proPost;
 	private boolean isPostProgram=false;
+	private boolean isAllTopic=false;
 	private int programid;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -89,11 +83,17 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 		proPost = new ArrayList<Post>();
 		Intent it =getIntent();
 		Post post =(Post)it.getSerializableExtra("saydetial");
+		Post allTopic = (Post) it.getSerializableExtra("topic");
 		if(post!=null){
 			isPostProgram=true;
 		 programid =post.getTopic().getProgram().getId();
 	       path ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page="+page+"&count="+count+"";
-		}else{
+		}else if(allTopic!=null){
+			userid=allTopic.getTopic().getUser().getId();
+			isAllTopic =true;
+			path ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/posts?page="+page+"&count="+count+"";
+		}
+		else{
 			try {
 				appData = (AppData) getApplication();
 				logininfo = appData.getLoginInfo();
@@ -160,7 +160,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 				hideProgress(rl);
 				if (result != null) {
 					if (isFirstLoading) {
-						adapter = new MyAdapter(MyPostActivity.this, result);
+						adapter = new MyAdapter(MyPostActivity.this);
 						mSubjectFooter.setVisibility(View.VISIBLE);
 						listView.setAdapter(adapter);
 						isFirstLoading = false;
@@ -238,6 +238,7 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 
 		public MyAdapter(Context context) {
 			this.mContext = context;
+			mInflater =LayoutInflater.from(context);
 		}
 
 		public void setData(JSONArray jArr) {
@@ -248,11 +249,6 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			return this.array_list;
 		}
 
-		public MyAdapter(Context context, JSONArray array) {
-			this.mContext = context;
-			this.mInflater = LayoutInflater.from(context);
-			this.array_list = array;
-		}
 
 		@Override
 		public int getCount() {
@@ -533,7 +529,11 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 		if(isPostProgram){
 			String postProgramPath ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page="+page+"&count="+count+"";
 			intiData(postProgramPath);
-		}else{
+		}else if(isAllTopic){
+			String topicPath ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/posts?page="+page+"&count="+count+"";
+			intiData(topicPath);
+		}
+		else {
 			String homePath ="http://tvsrv.webhop.net:8080/api/users/"
 					+ userid + "/homeline?page=" + page + "&count="
 					+ count + "";
@@ -548,7 +548,12 @@ public class MyPostActivity extends BaseActivity implements OnClickListener {
 			page = 1;
 			mSubjectFooter.setVisibility(View.VISIBLE);
 			Toast.makeText(this, "已经到达首页", Toast.LENGTH_SHORT).show();
-		} else {
+		} 
+		else if(isAllTopic){
+			String topicPath ="http://tvsrv.webhop.net:8080/api/users/"+userid+"/posts?page="+page+"&count="+count+"";
+			intiData(topicPath);
+		}
+		else {
 			if(isPostProgram){
 				String postProgramPath ="http://tvsrv.webhop.net:8080/api/programs/"+programid+"/posts?page="+page+"&count="+count+"";
 				intiData(postProgramPath);
