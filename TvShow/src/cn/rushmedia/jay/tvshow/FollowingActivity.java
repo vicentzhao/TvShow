@@ -134,8 +134,6 @@ public class FollowingActivity extends BaseActivity {
 //			Intent i = new Intent(FollowingActivity.this,UserDetailActivity.class);
 //			i.putExtra("userinfo", userList.get(position));
 //			startActivity(i);
-//			
-//			
 //		}
 //	});
 	ImageButton tv_reprogram_button = (ImageButton) findViewById(R.id.tv_reprogram_button);
