@@ -39,6 +39,7 @@ import cn.rushmedia.jay.tvshow.domain.Topic;
 import cn.rushmedia.jay.tvshow.domain.User;
 import cn.rushmedia.jay.tvshow.util.ImageCash;
 import cn.rushmedia.jay.tvshow.util.ImageDownloder;
+import cn.rushmedia.jay.tvshow.util.ImageFileCache;
 import cn.rushmedia.jay.tvshow.util.JsonUtil;
 
 public class HotTopicListActivity extends BaseActivity {
@@ -80,7 +81,7 @@ public class HotTopicListActivity extends BaseActivity {
 	Bitmap bitmap;
 	private int programeid;
 	int page = 1;
-	int count = 8;
+	int count = 10;
 	private String path;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,7 +93,7 @@ public class HotTopicListActivity extends BaseActivity {
 		Log.d("search", "path is:" + path);
 		imageList= new ArrayList<Bitmap>();
 		r1=(RelativeLayout) findViewById(R.id.loading);
-		listview =(ListView) findViewById(R.id.androidlist);
+		initView();
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -106,15 +107,12 @@ public class HotTopicListActivity extends BaseActivity {
 					
 			}
 		});
-		
 		ImageButton  tv_topic_back_button =(ImageButton) findViewById(R.id.tv_topic_back_button);
 		tv_topic_back_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(),MySearchActivity.class);
-			
 				startActivity(i);
-				
 			}
 		});
 		ImageButton backtohome = (ImageButton) findViewById(R.id.backtohome);
@@ -128,38 +126,42 @@ public class HotTopicListActivity extends BaseActivity {
 	   	  * 上一页
 	   	  */
 	   	
-	   	 Button tv_prepage=(Button) findViewById(R.id.tv_prepage);
-	   	 tv_prepage.setOnClickListener(new OnClickListener() {
-	   		
+		tv_mytopic_previewpage.setOnClickListener(new OnClickListener() {
 	   		@Override
 	   		public void onClick(View v) {
 	   			if(page==1){
 	   				 Toast.makeText(getApplicationContext(), "已经是第一页", 1).show();
-	   			}else
+	   			}else{
 	   				page =page-1;
-	   				intiData(page, count);
-	   				myAdapter.notifyDataSetChanged();
+	   				String realPath =path+"page="+page+"&count="+count+"";
+	   				ArrayList<Topic> initData =intiData(realPath);
+	   				listview.setAdapter(new MyAdapter(HotTopicListActivity.this, initData));
+	   			}
 	   		}
 	   	});
 	   		/**
 	   		 * 下一页
 	   		 */
-	   	 Button tv_nextpage=(Button) findViewById(R.id.tv_nextpage);
-	   	 tv_nextpage.setOnClickListener(new OnClickListener() {
+		tv_mytopic_nextpage.setOnClickListener(new OnClickListener() {
 	   		@Override
 	   		public void onClick(View v) {
-	   		   page =page+1;
-	   		   intiData(page, count);
-	   		myAdapter.notifyDataSetChanged();
+	   				page =page+1;
+	   				String realPath =path+"page="+page+"&count="+count+"";
+	   				ArrayList<Topic> initData =intiData(realPath);
+	   				if(initData!=null&&"[]".equals(initData)){
+	   				listview.setAdapter(new MyAdapter(HotTopicListActivity.this, initData));
+	   				}
+	   				else{
+	   					Toast.makeText(HotTopicListActivity.this, "这已经是最后一页", 1).show();
+	   				}
 	   		}
-
-			
 	   	});
-	   	intiData(page,count);
+	   	intiData(path);
 		
 		
 	}
-	private void intiData(final int page, final int count) {
+	private ArrayList<Topic> intiData(final String downpath) {
+		topicArraylist = new ArrayList<Topic>();
 		 new AsyncTask<Void, Void, List>(){
 				@Override
 				protected void onPreExecute() {
@@ -168,26 +170,24 @@ public class HotTopicListActivity extends BaseActivity {
 				}
 				@Override
 				protected void onPostExecute(List result) {
-					if(result!=null){
+					if(result!=null&&result.size()!=0){
 					hideProgress(r1);
-					myAdapter= new MyAdapter(getApplicationContext(),result);
 					super.onPostExecute(result);
+					myAdapter= new MyAdapter(getApplicationContext(),result);
 					myAdapter.notifyDataSetChanged();
 					listview.setAdapter(myAdapter);
 					}else{
 						hideProgress(r1);
 						super.onPostExecute(result);
-						finish();
 					}
 				}
 				@Override
 				protected List doInBackground(Void... params) {
 					try {
 						JsonUtil js = new JsonUtil();
-						String sameTopicPath=path+"?"+"page="+page+"&count="+count+"";
+						String sameTopicPath=downpath+"?"+"page="+page+"&count="+count+"";
 						Log.d("search", "sameTopicPath is:" + sameTopicPath);
 						sameTopic = js.getSource(sameTopicPath);
-						topicArraylist = new ArrayList<Topic>();
 						for (int i = 0; i < sameTopic.length(); i++) {
 							 topic = new 	Topic();
 								JSONObject  sametopicjb=sameTopic.getJSONObject(i);
@@ -221,17 +221,10 @@ public class HotTopicListActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						String imagepath=topicArraylist.get(1).getUser().getImage();
-						ImageDownloder imageDownloder = new ImageDownloder();
-						 try {
-							bitmap = imageDownloder.imageDownloder(imagepath);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 					return topicArraylist;
 				}
 			 }.execute();
+				return (ArrayList<Topic>) topicArraylist;
 	}
 			public final class ViewHolder{
 				public ImageView tv_sametopiclist_userimage;
@@ -259,6 +252,7 @@ public class HotTopicListActivity extends BaseActivity {
 			}
 			@Override
 			public View getView(final int position, View convertView, ViewGroup parent) {
+				ImageFileCache cache =ImageFileCache.getCashInstance();
 				holder=new ViewHolder();  
 				if (convertView == null) {
 					convertView = mInflater.inflate(R.layout.sametopiclist_detail, null);
@@ -273,6 +267,18 @@ public class HotTopicListActivity extends BaseActivity {
 				holder.tv_sametopiclist_userimage.setImageBitmap(bitmap);
 				holder.tv_sametopiclist_username.setText(topicArraylist.get(position).getUser().getName());
 				holder.tv_sametopiclist_topicname.setText(topicArraylist.get(position).getTopic_name());
+				cache = ImageFileCache.getCashInstance();
+				Bitmap bitmapFromCache = cache.getImage(topicArraylist.get(position).getUser().getImage());
+							Bitmap bitmap;
+								ImageDownloder imageDownloder = new ImageDownloder();
+								String imagepath=topicArraylist.get(position).getUser().getImage();
+								try {
+									bitmap = imageDownloder.imageDownloder(imagepath);
+									holder.tv_sametopiclist_userimage.setImageBitmap(bitmap);
+									cache.saveBmpToSd(bitmap, topicArraylist.get(position).getUser().getImage());
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 				return convertView;
 			}
 		}

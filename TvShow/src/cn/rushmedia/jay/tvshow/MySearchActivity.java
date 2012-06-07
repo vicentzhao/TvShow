@@ -68,7 +68,6 @@ public class MySearchActivity extends BaseActivity  {
 				String path = "http://tvsrv.webhop.net:8080/api/hot/topics/week";
 				i.putExtra("path", path);
 				startActivity(i);
-				finish();
 				
 			}
 		});
@@ -82,8 +81,8 @@ public class MySearchActivity extends BaseActivity  {
 	    		   Intent i = new Intent(getApplicationContext(),HotTopicListActivity.class);
 	    		   String path = "http://tvsrv.webhop.net:8080/api/hot/topics/day";
 	    		   i.putExtra("path", path);
+	    		   i.putExtra("hotday", 1);
 	    		   startActivity(i);
-	    		   finish();
 	    	   }
 	       });
 	       /**
@@ -94,7 +93,6 @@ public class MySearchActivity extends BaseActivity  {
 	   		public void onClick(View v) {
 	   			Intent i = new Intent(getApplicationContext(),TableActivity.class);
 	   			startActivity(i);
-	   			finish();
 	   		}
 	   	});
 	       
@@ -107,7 +105,6 @@ public class MySearchActivity extends BaseActivity  {
 				  String path ="http://tvsrv.webhop.net:8080/api/hot/programs/week";
 				  weekHotProgramIntent.putExtra("path", path);
 				  startActivity(weekHotProgramIntent);
-				  finish();
 			}
 		});
 	       /**
@@ -120,7 +117,6 @@ public class MySearchActivity extends BaseActivity  {
 	    		   String path ="http://tvsrv.webhop.net:8080/api/hot/programs/day";
 	    		   dayHotProgramIntent.putExtra("path", path);
 	    		   startActivity(dayHotProgramIntent);
-	    		   finish();
 	    	   }
 	       });
 	       /**
@@ -133,7 +129,6 @@ public class MySearchActivity extends BaseActivity  {
 				String path = "http://tvsrv.webhop.net:8080/api/hot/users/week";
 				hotpeopleIntent.putExtra("path", path);
 				startActivity(hotpeopleIntent);
-				finish();
 			}
 		});
 	       /**
