@@ -123,18 +123,18 @@ public class UsersActivity extends BaseActivity {
 		}.execute();
 	
 		userlistview.setAdapter(myAdapter);
-		userlistview.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Intent i = new Intent(getApplicationContext(),UsersListDetailActivity.class);
-				User userinfo = userList.get(position);
-				i.putExtra("userinfo", userinfo);
-				startActivity(i);
-				
-			}
-		});
+//		userlistview.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view,
+//					int position, long id) {
+//				Intent i = new Intent(getApplicationContext(),UsersListDetailActivity.class);
+//				User userinfo = userList.get(position);
+//				i.putExtra("userinfo", userinfo);
+//				startActivity(i);
+//				
+//			}
+//		});
 		ImageButton tv_reprogram_button =(ImageButton) findViewById(R.id.tv_reprogram_button);
 		tv_reprogram_button.setOnClickListener(new OnClickListener() {
 			

@@ -62,16 +62,16 @@ public class TopicDetialActivity extends BaseActivity {
 	   isCollected(topicId);
 	    final Topic topic = home.getTopic();
 	    initView();
-	    back_button.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(TopicDetialActivity.this,OthersTopicDetialActivity.class);
-				i.putExtra("topic",home);
-				startActivity(i);
-				
-			}
-		});
+//	    back_button.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				Intent i = new Intent(TopicDetialActivity.this,OthersTopicDetialActivity.class);
+//				i.putExtra("topic",home);
+//				startActivity(i);
+//				
+//			}
+//		});
 	    ImageDownloder id = new ImageDownloder();
 	    String userimagepath = topic.getUser().getImage();
 	    String programimagepath =topic.getProgram().getImagePath();

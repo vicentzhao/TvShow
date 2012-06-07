@@ -94,16 +94,16 @@ public class FollowerActivity extends BaseActivity {
 		    startActivity(i);
 		}
 	});
-     listview.setOnItemClickListener(new OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			Intent  i = new Intent(FollowerActivity.this,UserDetailActivity.class);
-			i.putExtra("userinfo", userList.get(position));
-			startActivity(i);
-			
-		}
-	});
+//     listview.setOnItemClickListener(new OnItemClickListener() {
+//		@Override
+//		public void onItemClick(AdapterView<?> parent, View view, int position,
+//				long id) {
+//			Intent  i = new Intent(FollowerActivity.this,UserDetailActivity.class);
+//			i.putExtra("userinfo", userList.get(position));
+//			startActivity(i);
+//			
+//		}
+//	});
      ImageButton backtohome = (ImageButton) findViewById(R.id.backtohome);
  	backtohome.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

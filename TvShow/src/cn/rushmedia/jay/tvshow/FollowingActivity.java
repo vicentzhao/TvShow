@@ -126,18 +126,18 @@ public class FollowingActivity extends BaseActivity {
 			}
 		});
 	listview.setAdapter(myAdapter);
-	listview.setOnItemClickListener(new OnItemClickListener() {
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			Intent i = new Intent(FollowingActivity.this,UserDetailActivity.class);
-			i.putExtra("userinfo", userList.get(position));
-			startActivity(i);
-			
-			
-		}
-	});
+//	listview.setOnItemClickListener(new OnItemClickListener() {
+//
+//		@Override
+//		public void onItemClick(AdapterView<?> parent, View view, int position,
+//				long id) {
+//			Intent i = new Intent(FollowingActivity.this,UserDetailActivity.class);
+//			i.putExtra("userinfo", userList.get(position));
+//			startActivity(i);
+//			
+//			
+//		}
+//	});
 	ImageButton tv_reprogram_button = (ImageButton) findViewById(R.id.tv_reprogram_button);
 	tv_reprogram_button.setOnClickListener(new OnClickListener() {
 		
